@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_10sdp"
+>
+
+<android.support.v7.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cv_playlist_card"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="@dimen/_0sdp"
+        app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+>
+
+    <LinearLayout
+            android:layout_width="@dimen/card_width"
+            android:layout_height="@dimen/card_height"
+            android:orientation="vertical"
+    >
+        <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/_80sdp"
+                android:layout_gravity="center"
+        >
+            <ImageView
+                    android:layout_width="@dimen/_160sdp"
+                    android:layout_height="@dimen/_160sdp"
+                    android:src="@drawable/main_background"
+                    android:id="@+id/iv_playlist_poster"
+            />
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+
+                app:cardBackgroundColor="@color/card_color"
+
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
+
+                app:cardCornerRadius="@dimen/_10sdp"
+                app:cardElevation="@dimen/_0sdp"
+                android:clickable="false"
+        >
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+            >
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                >
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Playlist title"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:maxLines="1"
+                            android:id="@+id/tv_playlist_title"
+                            android:textSize="@dimen/text_size_3"
+                            android:textColor="@color/colorWhite"
+                    />
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Sub"
+                            android:layout_marginLeft="@dimen/_15sdp"
+                            android:maxLines="1"
+                            android:id="@+id/tv_playlist_sub"
+                            android:textSize="@dimen/text_size_4"
+                            android:textColor="@color/colorWhite"
+                    />
+                </LinearLayout>
+
+                <android.support.v7.widget.CardView
+                        android:id="@+id/cv_playlist_options"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        app:cardElevation="@dimen/_0sdp"
+                        app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+                        android:layout_gravity="center_vertical"
+                        app:cardCornerRadius="15dp"
+                >
+
+                    <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:src="@drawable/ic_more_vert_black_24dp"
+                            android:layout_margin="@dimen/_5sdp"
+                            android:clickable="false"
+                    />
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+
+</RelativeLayout>

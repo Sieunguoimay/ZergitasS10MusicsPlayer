@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true"
+        app:cardElevation="@dimen/_0sdp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+        <android.support.v7.widget.CardView
+                android:id="@+id/cv_queue_row_drag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                app:cardElevation="@dimen/_0sdp"
+                app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+                android:layout_gravity="center_vertical"
+        >
+
+            <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_drag_handle_24dp"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:clickable="false"
+            />
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/_5sdp"
+                app:cardCornerRadius="@dimen/_5sdp"
+                app:cardElevation="@dimen/_0sdp"
+                app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+        >
+
+        <ImageView
+                android:id="@+id/iv_queue_row_icon"
+                android:layout_width="@dimen/home_screen_item_height"
+                android:layout_height="@dimen/home_screen_item_height"
+                android:src="@drawable/ic_library_music_24dp"
+                android:clickable="false"
+                android:layout_margin="@dimen/_5sdp"
+        />
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+        >
+            <TextView
+                    android:id="@+id/tv_queue_row_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All Songs"
+                    android:textSize="@dimen/text_size_3"
+                    android:textColor="@color/colorWhite"
+                    android:clickable="false"
+                    android:maxLines="2"
+            />
+            <TextView
+                    android:id="@+id/tv_queue_row_sub_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="All Songs"
+                    android:textSize="@dimen/text_size_4"
+                    android:textColor="@color/colorWhite"
+                    android:clickable="false"
+            />
+        </LinearLayout>
+
+        <android.support.v7.widget.CardView
+                android:id="@+id/cv_queue_row_options"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+
+                app:cardElevation="@dimen/_0sdp"
+                app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+                android:layout_gravity="center_vertical"
+        >
+
+            <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_more_vert_black_24dp"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:clickable="false"
+            />
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

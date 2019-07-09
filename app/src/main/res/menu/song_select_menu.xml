@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/song_select_cancel"
+          android:title="@string/action_song_select_cancel"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_close_24dp"
+    />
+    <item android:id="@+id/song_select_ok"
+          android:title="@string/action_song_select_ok"
+          app:showAsAction="ifRoom"
+          android:icon="@drawable/ic_check_24dp"
+    />
+</menu>

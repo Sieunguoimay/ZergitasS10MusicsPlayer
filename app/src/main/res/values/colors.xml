@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#333745</color>
+    <color name="colorPrimaryDark">#333745</color>
+    <color name="colorAccent">#FE5F55</color>
+
+    <color name="colorWhite">#EEF5DB</color>
+    <color name="textColorGray">#C7EFCF</color>
+    <color name="colorPrimary_end">#81374B</color>
+    <color name="colorPrimary_center">#333745</color>
+    <color name="colorTransparentDark">#4D222E</color>
+    <color name="colorTransparentLight">#128671B9</color>
+    <color name="colorAbsoluteTransparency">#00ffffff</color>
+    <color name="card_color">#454958</color>
+</resources>
+
+<!--<color name="colorPrimary">#1A244C</color>-->
+<!--<color name="colorPrimaryDark">#1A244C</color>-->
+<!--<color name="colorAccent">#FFD025</color>-->
+
+<!--<color name="colorWhite">#FFFFFF</color>-->
+<!--<color name="textColorGray">#5F6385</color>-->
+<!--<color name="colorPrimary_end">#682746</color>-->
+<!--<color name="colorPrimary_center">#2C1E52</color>-->
+<!--<color name="colorTransparentDark">#6D2C1E52</color>-->
+<!--<color name="colorTransparentLight">#128671B9</color>-->
+<!--<color name="colorAbsoluteTransparency">#00ffffff</color>-->
