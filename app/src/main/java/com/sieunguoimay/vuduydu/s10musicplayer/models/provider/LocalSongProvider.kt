@@ -7,9 +7,11 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 
+private const val TAG = "LOCAL_SONG_PROVIDER"
 object LocalSongProvider{
     fun loadSong(context: Context
                  , songList:ArrayList<Song>, songMap:LinkedHashMap<Long, Int>
@@ -37,7 +39,6 @@ object LocalSongProvider{
         if(cursor!=null){
             var count = 0
             while(cursor.moveToNext()){
-                songMap.put(cursor.getLong(0),count++)
                 val song = Song(cursor.getLong(0),
                         cursor.getLong(1),
                         cursor.getString(2),
@@ -48,9 +49,15 @@ object LocalSongProvider{
                         cursor.getLong(6),
                         cursor.getLong(7)
                     )
-                processForCategory(cursor, song,albumList,albumMap,1,8)
-                processForCategory(cursor, song,artistList,artistMap,9,3)
-                songList.add(song)
+
+                Log.d(TAG,"Duration "+song.duration)
+                if(song.duration>100&&!song.path.endsWith("mp4")){
+                    Log.d(TAG,"Added "+song.title)
+                    songMap.put(cursor.getLong(0),count++)
+                    songList.add(song)
+                    processForCategory(cursor, song,albumList,albumMap,1,8)
+                    processForCategory(cursor, song,artistList,artistMap,9,3)
+                }
             }
             return true
         }

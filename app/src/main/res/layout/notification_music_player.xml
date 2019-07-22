@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:gravity="center_vertical"
+              android:background="@color/colorPrimary"
 >
 
 
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:id="@+id/ll_noti_title"
     >
         <ImageView
                 android:layout_width="@dimen/standard_item_height"
@@ -22,21 +24,49 @@
 
         />
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Hello world"
-                android:textColor="@color/colorWhite"
-                android:maxLines="1"
                 android:id="@+id/tv_noti_song_title"
                 android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginRight="@dimen/_10sdp"
                 android:textSize="@dimen/text_size_4"
-                android:layout_weight="1"
+                android:layout_weight="4"
                 android:layout_gravity="center"
+
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:textColor="@color/colorWhite"
         />
 
-
+        <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:id="@+id/bt_noti_close"
+                android:layout_weight="1"
+                android:visibility="gone"
+        >
+            <ImageView
+                    android:layout_width="@dimen/_22sdp"
+                    android:layout_height="@dimen/_22sdp"
+                    android:src="@drawable/ic_close_24dp"
+                    android:clickable="false"
+                    android:id="@+id/iv_noti_close"
+            />
+        </RelativeLayout>
     </LinearLayout>
     <LinearLayout
+            android:layout_below="@+id/ll_noti_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -46,7 +76,7 @@
 
         <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:id="@+id/bt_noti_prev"
@@ -68,7 +98,7 @@
 
         <RelativeLayout
                 android:layout_width="@dimen/_0sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:clickable="true"
@@ -91,7 +121,7 @@
 
         <RelativeLayout
                 android:layout_width="@dimen/_0sdp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:clickable="true"
@@ -112,7 +142,7 @@
 
         <RelativeLayout
                 android:layout_width="0dp"
-                android:layout_height="@dimen/_50sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_marginRight="@dimen/_10sdp"
                 android:layout_marginLeft="@dimen/_10sdp"
                 android:clickable="true"
@@ -133,4 +163,4 @@
         </RelativeLayout>
 
     </LinearLayout>
-</LinearLayout>
+</RelativeLayout>

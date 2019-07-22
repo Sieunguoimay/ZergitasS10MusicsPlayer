@@ -6,4 +6,5 @@ object ServicesActions {
     const val NEXT = "com.sieunguoimay.vuduydu.s10musicplayer.NEXT"
     const val PREV = "com.sieunguoimay.vuduydu.s10musicplayer.PREV"
     const val LOVE = "com.sieunguoimay.vuduydu.s10musicplayer.LOVE"
+
 }

@@ -2,29 +2,31 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSo
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.*
 import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
 import com.sieunguoimay.vuduydu.s10musicplayer.R
+import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.SongSelectActivity
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.PlaylistRecyclerViewAdapter
 
 import kotlinx.android.synthetic.main.enter_name_dialog.*
 
 private const val TAG = "PLAYLIST_FRAGMENT"
 
 class PlaylistFragment: Fragment() {
-    private val REQUEST_SONG_SELECT_CODE = 122
+
+    private val REQUEST_SONG_SELECT_CODE = 123
 
     private var newPlaylistTitle:String? = null
 
@@ -38,64 +40,82 @@ class PlaylistFragment: Fragment() {
 
     private fun initView(view :View):View{
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_playlist_fragment)
+        val fabAddPlaylist = view.findViewById<CardView>(R.id.cv_add_playlist)
+
+        fabAddPlaylist.visibility = View.VISIBLE
+
+        fabAddPlaylist.setOnClickListener {
+            Log.d(TAG, "Create playlist button pressed")
+            createDialog()
+        }
+
+
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.itemAnimator = DefaultItemAnimator()
         val gridLayoutManager= GridLayoutManager(activity,2)
         recyclerView.layoutManager = gridLayoutManager
         recyclerView.adapter = (activity as HomeScreenActivity).playlistAdapter
-
-        setHasOptionsMenu(true)
         return view
     }
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.playlist_menu, menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item!!.itemId){
-            R.id.playlist_menu_create->{
-                Log.d(TAG, "Create playlist button pressed")
-//                val homeScreenActivity = (activity as HomeScreenActivity)
-//                homeScreenActivity.databasePresenter.createPlaylist("Favourite playlist",homeScreenActivity.favouriteList)
-                createDialog()
-            }
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
 
-
-
-
-
-    private fun createDialog(){
+    fun createDialog(){
         var builder = AlertDialog.Builder(activity)
-        builder.setTitle("Enter playlist title")
-        builder.setView(R.layout.enter_name_dialog)
-        builder.setPositiveButton("OK", object: DialogInterface.OnClickListener{
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                val title = (dialog as AlertDialog).findViewById<EditText>(R.id.et_enter_name_dialog)
-                Log.d(TAG, "Dialog returned "+title.text)
-                newPlaylistTitle = title.text.toString()
-                if(newPlaylistTitle==""){
-                    Toast.makeText(activity,"Empty name",Toast.LENGTH_SHORT).show()
-                    return
-                }
+        builder.setView(layoutInflater.inflate(R.layout.enter_name_dialog,null))
+        val dialog = builder.create()
+        dialog.show()
+        val title = dialog.findViewById<EditText>(R.id.et_enter_name_dialog)
+        dialog.findViewById<CardView>(R.id.cv_enter_name_dialog_ok).setOnClickListener {
+            Log.d(TAG, "Dialog returned "+title.text)
+            newPlaylistTitle = title.text.toString()
+            if(newPlaylistTitle==""){
+                Toast.makeText(activity,"Empty name",Toast.LENGTH_SHORT).show()
+            }else {
                 //enter the select song fragment from here...
                 startSongSelectingActivityForResult()
             }
-        })
-        builder.setNegativeButton("Cancel", object: DialogInterface.OnClickListener{
-            override fun onClick(dialog: DialogInterface?, which: Int) {
-                dialog!!.cancel()
+            dialog.dismiss()
+        }
+        dialog.findViewById<CardView>(R.id.cv_enter_name_dialog_cancel).setOnClickListener {
+            dialog.cancel()
+        }
+    }
+    companion object{
+        fun createDialogToRename(context: Context, playlist: Playlist, index:Int, adapter:PlaylistRecyclerViewAdapter,inflater:LayoutInflater){
+            var builder = AlertDialog.Builder(context)
+            builder.setView(inflater.inflate(R.layout.enter_name_dialog,null))
+
+            val dialog = builder.create()
+            dialog.show()
+
+            val title = dialog.findViewById<EditText>(R.id.et_enter_name_dialog)
+            title.setText(playlist.title)
+            title.setSelection(title.text.length)
+            dialog.findViewById<CardView>(R.id.cv_enter_name_dialog_ok).setOnClickListener {
+                Log.d(TAG, "Dialog returned "+title.text)
+
+                val newPlaylistTitle = title.text.toString()
+                if(newPlaylistTitle==""){
+                    Toast.makeText(context,"Empty name",Toast.LENGTH_SHORT).show()
+                }else {
+                    playlist.title = title.text.toString()
+                    (context as HomeScreenActivity).databasePresenter.renamePlaylist(newPlaylistTitle,playlist.id)
+                }
+                dialog.dismiss()
             }
-        })
-        builder.show()
+            dialog.findViewById<CardView>(R.id.cv_enter_name_dialog_cancel).setOnClickListener {
+                dialog.cancel()
+            }
+
+        }
     }
 
     private fun startSongSelectingActivityForResult(){
         val intent = Intent(activity, SongSelectActivity::class.java)
+
         intent.putParcelableArrayListExtra("songList",(activity as HomeScreenActivity).songList)
+        intent.putExtra("dark_mode_enabled",HomeScreenActivity.darkModeEnabled)
+
         startActivityForResult(intent,REQUEST_SONG_SELECT_CODE)
     }
 

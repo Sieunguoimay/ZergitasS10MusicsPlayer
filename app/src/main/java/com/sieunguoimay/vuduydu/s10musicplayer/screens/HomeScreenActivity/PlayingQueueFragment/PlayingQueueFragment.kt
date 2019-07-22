@@ -5,56 +5,67 @@ import android.support.v4.app.Fragment
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SimpleItemTouchHelperCallback
-import kotlinx.android.synthetic.main.app_bar_home_screen.*
+import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import java.lang.IndexOutOfBoundsException
 
+const val TAG = "PLAYING_QUEUE_FRAGMENT"
 class PlayingQueueFragment: Fragment(), HomeScreenActivity.ServiceSongQueueCallback {
 
-
     var recyclerView:RecyclerView? = null
+    var homeScreenActivity:HomeScreenActivity? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d(TAG,"HELLO PLAYING QUEUE FRAGMENT")
         // Inflate the layout for this fragment
         return initView(inflater.inflate(R.layout.fragment_playing_queue, container, false))
     }
 
     private fun initView(view : View): View {
-        val a = (activity as HomeScreenActivity).queueAdapter
+
         recyclerView = view.findViewById(R.id.rv_playing_queue_fragment)
-        recyclerView?.layoutManager = LinearLayoutManager(context)
+
+        recyclerView?.layoutManager = object: LinearLayoutManager(activity){
+            override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
+                try{
+                    super.onLayoutChildren(recycler, state)
+                }catch (e:IndexOutOfBoundsException){
+                    e.printStackTrace()
+                }
+            }
+        }
+        homeScreenActivity = (activity as HomeScreenActivity)
         recyclerView?.itemAnimator = DefaultItemAnimator()
-        recyclerView?.adapter = a
+        (recyclerView?.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+            homeScreenActivity!!.aCopyOfCurrentSongIndexToCarryWithinThisClass, Utils.DPToPX(180,activity!!))
 
-        if(a!=null) ItemTouchHelper(SimpleItemTouchHelperCallback(a)).attachToRecyclerView(recyclerView)
 
-        setHasOptionsMenu(true)
-        (activity as HomeScreenActivity).supportActionBar?.setTitle(R.string.action_bar_title_playing_queue)
+        val a = homeScreenActivity!!.queueAdapter
+        if(a!=null) {
+            recyclerView?.adapter = a
+            a.itemTouchHelper.attachToRecyclerView(recyclerView)
+        }
+
         return view
     }
     override fun onStop(){
-        (activity as HomeScreenActivity).queueFragmentOpened = false
+        //homeScreenActivity!!.queueFragmentOpened = false
+        Log.d(TAG,"GOODBYE PLAYING QUEUE FRAGMENT")
         super.onStop()
-    }
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item!!.itemId){
-            android.R.id.home->{
-                (activity as HomeScreenActivity).onBackPressed()
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun notifyQueueChanged() {
         recyclerView?.adapter!!.notifyDataSetChanged()
+        (recyclerView?.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+            homeScreenActivity!!.aCopyOfCurrentSongIndexToCarryWithinThisClass, Utils.DPToPX(180,activity!!))
     }
 }

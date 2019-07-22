@@ -6,21 +6,22 @@ import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 
 private const val TAG = "DATABASE_PRESENTER"
-class DatabasePresenter(var model:DatabaseContract.Model):DatabaseContract.Presenter {
+class DatabasePresenter(
+    var view: DatabaseContract.View,
+    var model:DatabaseContract.Model):DatabaseContract.Presenter {
 
 
-    var view: DatabaseContract.View? = null
 
     override fun likeOrUnlike(song: Song) {
         if(!song.liked) {
             song.liked = true
             model.insertFavouriteSong(song.id,song.title)
-            view?.updateOnLike(song)
+            view.updateOnLike(song)
         }
         else {
             song.liked = false
             model.deleteFavouriteSong(song.id)
-            view?.updateOnUnlike(song)
+            view.updateOnUnlike(song)
         }
     }
 
@@ -39,7 +40,7 @@ class DatabasePresenter(var model:DatabaseContract.Model):DatabaseContract.Prese
 
             songList[songMap[fs.songId]!!].liked = true
         }
-        view?.updateOnFavouritSongsLoaded(favouriteList.size)
+        view.updateOnFavouritSongsLoaded(favouriteList.size)
     }
 
 
@@ -50,15 +51,22 @@ class DatabasePresenter(var model:DatabaseContract.Model):DatabaseContract.Prese
         if(songs.size>0) {
             val id = model.insertPlaylist(playlistTitle, songs)
             if (id > 0) {
-                view?.showMessageOnPlaylistCreated(id)
+                view.showMessageOnPlaylistCreated(id)
             }
         }
+    }
+    override fun renamePlaylist(playlistTitle:String,playlistId:Long){
+        model.updatePlaylist(playlistTitle,playlistId)
+        view.showMessageOnPlaylistRenamed(playlistId)
     }
 
     override fun deletePlaylist(playlist: Playlist) {
         model.deltePlaylist(playlist.id)
-
-        view?.updateOnPlaylistsLoaded(-1)
+        view.updateOnPlaylistsLoaded(-1)
+    }
+    override fun deleteSongInPlaylist(playlist:Playlist,song:Song){
+        model.deleteSongInPlaylist(playlist,song)
+        view.showMessageOnDeletedSongFromPlaylist(playlist,song)
     }
 
     override fun getAllPlaylists(
@@ -68,7 +76,7 @@ class DatabasePresenter(var model:DatabaseContract.Model):DatabaseContract.Prese
         songMap: LinkedHashMap<Long, Int>
     ) {
         playlists.clear()
-        var data = model.getAllPlaylists()
+        val data = model.getAllPlaylists()
         val tempMap = LinkedHashMap<Long,Int>()
         var playlistSongListIndex = 0
         for(songInfo in data.second){
@@ -83,7 +91,7 @@ class DatabasePresenter(var model:DatabaseContract.Model):DatabaseContract.Prese
             playlist.songList.add(songList[songMap[songInfo.songId]!!])
 
         }
-        view?.updateOnPlaylistsLoaded(playlists.size)
+        view.updateOnPlaylistsLoaded(playlists.size)
     }
 
 }

@@ -9,7 +9,7 @@ class SimpleItemTouchHelperCallback(
 
 
     override fun isLongPressDragEnabled(): Boolean {
-        return true
+        return false
     }
 
     override fun isItemViewSwipeEnabled(): Boolean {

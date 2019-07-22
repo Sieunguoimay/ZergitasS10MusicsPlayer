@@ -12,8 +12,7 @@ class MusicsLoadingPresenter(
     override fun loadSong(songList:ArrayList<Song>, songMap:LinkedHashMap<Long, Int>,
                           albumList:ArrayList<Category>, artistList:ArrayList<Category>) {
         //assume that songs are loaded
-        val songs = model.getSong(songList,songMap,albumList,artistList,this)
-
+        model.getSong(songList,songMap,albumList,artistList,this)
     }
 
     override fun onThumbailsLoaded() {

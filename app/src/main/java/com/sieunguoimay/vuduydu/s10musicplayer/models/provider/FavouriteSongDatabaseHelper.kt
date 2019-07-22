@@ -9,7 +9,7 @@ private const val TAG = "DATABASE_HELPER"
 class FavouriteSongDatabaseHelper(
     var context: Context,
     DATABASE_NAME:String = "s10_music_player_db",
-    DATABASE_VERSION:Int = 6
+    DATABASE_VERSION:Int = 8
 ) : SQLiteOpenHelper(context,DATABASE_NAME,null, DATABASE_VERSION){
 
 

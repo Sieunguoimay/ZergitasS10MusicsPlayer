@@ -2,6 +2,7 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.CardView
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,19 +11,28 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.View.GONE
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.SongsFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongRecyclerViewAdapter
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import kotlinx.android.synthetic.main.app_bar_home_screen.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class SearchFragment : Fragment() {
+
+
+
     private var sampleList:ArrayList<Song>? = null
     private var displayList = ArrayList<Song>()
     private var recyclerView:RecyclerView? = null
+    private var searchBox:TextView? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,41 +43,49 @@ class SearchFragment : Fragment() {
 
     private fun initView(view : View): View {
 
-        val searchBox = view.findViewById<TextView>(R.id.tv_search_box)
+        searchBox = view.findViewById(R.id.tv_search_box)
         recyclerView = view.findViewById(R.id.rv_search_fragment)
-        recyclerView!!.layoutManager = LinearLayoutManager(context)
+
+
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
         recyclerView!!.itemAnimator = DefaultItemAnimator()
-        recyclerView!!.adapter = SongRecyclerViewAdapter(activity as HomeScreenActivity,displayList,(activity as HomeScreenActivity))
+        recyclerView!!.adapter = SongRecyclerViewAdapter(activity as HomeScreenActivity,displayList,(activity as HomeScreenActivity), activity as HomeScreenActivity)
         setHasOptionsMenu(true)
         sampleList = (activity as HomeScreenActivity).songList
         displayList.addAll(sampleList!!)
 
-        searchBox.addTextChangedListener(object:TextWatcher{
+        searchBox?.addTextChangedListener(object:TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                filterOutTheList(searchBox.text.toString().toLowerCase())
+                filterOutTheList(searchBox?.text.toString().toLowerCase())
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             }
         })
-        (activity as HomeScreenActivity).supportActionBar?.setTitle(R.string.title_search_fragment)
-        searchBox.requestFocus()
-        Utils.showKeyBoard(activity as HomeScreenActivity)
+        (activity as HomeScreenActivity).actionBar?.setTitle(R.string.title_search_fragment)
+        searchBox?.requestFocus()
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Utils.showKeyBoard(activity as HomeScreenActivity)
     }
 
     override fun onStop() {
         Utils.hideKeyBoard(activity!!)
+        searchBox?.text = ""
         super.onStop()
     }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             android.R.id.home->{
-                (activity as HomeScreenActivity).onBackPressed()
+                (activity as HomeScreenActivity).popBackUptoHomeScreenFragment()
                 return true
             }
         }

@@ -21,6 +21,7 @@ open class Song(
 
     var liked:Boolean = false
     var selected:Boolean = false
+    var isPlaying:Boolean = false
   constructor(parcel: Parcel)
           :this(
           parcel.readLong(),
@@ -28,7 +29,7 @@ open class Song(
           parcel.readString()!!,
           parcel.readString()!!,
           parcel.readString()!!,
-          parcel.readParcelable(Bitmap::class.java.classLoader),
+          null,// parcel.readParcelable(Bitmap::class.java.classLoader)
           parcel.readLong(),
           parcel.readLong(),
           parcel.readLong())
@@ -46,7 +47,7 @@ open class Song(
     dest.writeString(title)
     dest.writeString(artist)
     dest.writeString(path)
-    dest.writeParcelable(thumb,flags)
+
     dest.writeLong(duration)
     dest.writeLong(date)
     dest.writeLong(size)

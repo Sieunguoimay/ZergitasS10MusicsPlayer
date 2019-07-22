@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
 
 
 class PlaylistSongRecyclerViewAdapter(
@@ -24,7 +25,7 @@ class PlaylistSongRecyclerViewAdapter(
                 R.layout.standard_row,
                 p0,
                 false
-            ),moreOptionListener
+            ),moreOptionListener,listType
         )
     }
     override fun getItemCount(): Int {
@@ -32,9 +33,10 @@ class PlaylistSongRecyclerViewAdapter(
     }
     override fun onBindViewHolder(p0: StandardSongViewHolder, p1: Int) {
         var song = songList[p1]
-        p0.bind(song,p1)
+        p0.bind(song,playlistIndex,p1)
         p0.itemView.setOnClickListener {
-            listener.onItemClick(Pair(listType,Pair(p1,playlistIndex)))
+            listener.onItemClick(Pair(listType,Pair(p0.adapterPosition,playlistIndex)))
         }
+
     }
 }

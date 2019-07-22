@@ -30,7 +30,7 @@ class LoadSongDataAsyncTask(
     override fun doInBackground(vararg params:Params ): Int {
         LocalSongProvider.loadSong(params[0].context,params[0].songList,params[0].songMap,params[0].albumList,params[0].artistList)
         publishProgress(Pair(params[0].songList, null))
-        getThumbailsAndLikeStates(params[0].context,params[0].albumList,params[0].songMap)
+        getThumbailsAndLikeStates(params[0].context,params[0].albumList,params[0].artistList,params[0].songMap)
         return 0
     }
 
@@ -48,7 +48,7 @@ class LoadSongDataAsyncTask(
         }
     }
 
-    private fun getThumbailsAndLikeStates(context:Context, albumList:ArrayList<Category>, songMap:LinkedHashMap<Long,Int>) {
+    private fun getThumbailsAndLikeStates(context:Context, albumList:ArrayList<Category>,artistList:ArrayList<Category>, songMap:LinkedHashMap<Long,Int>) {
         val size = context.resources.getDimensionPixelSize(R.dimen._100sdp)
         for (album in albumList) {
             try {
@@ -58,6 +58,13 @@ class LoadSongDataAsyncTask(
                     song.thumb = album.art
                     publishProgress(Pair(null, Pair(songMap[song.id]!!, song)))
                 }
+            } catch (e: Exception) {
+            }
+        }
+        for (artist in artistList) {
+            try {
+                val thumb = LocalSongProvider.getThumbail(context, artist.id)
+                artist.art = thumb.scaleAndCropCenter(size, size)
             } catch (e: Exception) {
             }
         }

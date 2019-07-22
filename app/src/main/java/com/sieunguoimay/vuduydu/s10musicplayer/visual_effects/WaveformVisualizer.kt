@@ -2,6 +2,8 @@ package com.sieunguoimay.vuduydu.s10musicplayer.visual_effects
 
 import android.media.audiofx.Visualizer
 
+
+
 class WaveformVisualizer {
 
     private var visualizer: Visualizer? = null
@@ -14,14 +16,15 @@ class WaveformVisualizer {
 
         visualizer?.setDataCaptureListener(object:Visualizer.OnDataCaptureListener{
             override fun onFftDataCapture(visualizer: Visualizer?, fft: ByteArray?, samplingRate: Int) {
+                if(fft!=null){
+                    waveformView?.updateWaveform(fft,samplingRate)
+
+                }
             }
 
             override fun onWaveFormDataCapture(visualizer: Visualizer?, waveform: ByteArray?, samplingRate: Int) {
-                if(waveform!=null){
-                    waveformView?.updateWaveform(waveform)
-                }
             }
-        },Visualizer.getMaxCaptureRate(),true, false)
+        },Visualizer.getMaxCaptureRate()/2,false, true)
 
         visualizer?.captureSize = Visualizer.getCaptureSizeRange()[1]
 

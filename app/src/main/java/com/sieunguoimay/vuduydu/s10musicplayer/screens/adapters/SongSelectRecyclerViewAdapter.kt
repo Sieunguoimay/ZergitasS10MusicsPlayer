@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
 
 class SongSelectRecyclerViewAdapter(
@@ -37,17 +38,27 @@ class SongSelectRecyclerViewAdapter(
         p0.title.text = song.title
         p0.sub.text = song.artist
 
+        p0.iv_more.setImageResource(
+            if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_more_white}else{R.drawable.ic_more}
+        )
+
+
+
         if(song.thumb!=null)
             p0.thumbail.setImageBitmap(song.thumb)
         else
-            p0.thumbail.setImageResource(R.drawable.ic_library_music_24dp)
+            p0.thumbail.setImageResource(R.drawable.ic_songs)
 
         if(song.selected){
             p0.background.setBackgroundColor(ContextCompat.getColor(context,R.color.colorTransparentLight))
-            p0.selectState.setImageResource(R.drawable.ic_check_box_24dp)
+            p0.selectState.setImageResource(R.drawable.ic_tick)
         }else{
             p0.background.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAbsoluteTransparency))
-            p0.selectState.setImageResource(R.drawable.ic_crop_din_24dp)
+
+            if(HomeScreenActivity.darkModeEnabled)
+                p0.selectState.setImageResource(R.drawable.ic_tick_no_dark)
+            else
+                p0.selectState.setImageResource(R.drawable.ic_tick_no)
         }
 
         p0.cv_select.setOnClickListener{
@@ -70,6 +81,8 @@ class SongSelectRecyclerViewAdapter(
         var selectState: ImageView
         var background:CardView
         var cv_select: CardView
+        var cv_more:CardView
+        var iv_more:ImageView
         init{
             title = view.findViewById(R.id.tv_song_select_title)
             sub= view.findViewById(R.id.tv_song_select_sub_text)
@@ -77,6 +90,10 @@ class SongSelectRecyclerViewAdapter(
             selectState = view.findViewById(R.id.iv_song_select_state)
             background = view.findViewById(R.id.cv_song_select_backgound)
             cv_select = view.findViewById(R.id.cv_song_select_state)
+            cv_more = view.findViewById(R.id.cv_song_select_options)
+            iv_more = view.findViewById(R.id.iv_song_select_options)
+
+            cv_more.visibility =View.GONE
         }
     }
 

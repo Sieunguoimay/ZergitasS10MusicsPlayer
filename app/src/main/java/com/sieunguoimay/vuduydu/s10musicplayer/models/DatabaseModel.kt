@@ -34,19 +34,31 @@ class DatabaseModel(context: Context): DatabaseContract.Model{
 
         val playlistId = database.playlistsTable.insertPlaylist(Playlist(playlistTitle),database.writableDatabase)
 
-        Log.d(TAG,"Inserting playlist "+playlistTitle+" "+database.playlistsTable.getPlaylistCount(database.readableDatabase))
+        Log.d(TAG,"Inserting playlist "+playlistTitle+" "+playlistId)
 
         for(song in songs)
             database.playlistSongsTable.insertPlaylistSong(PlaylistSongInfo(song.id, playlistId, playlistTitle),database.writableDatabase)
 
         Log.d(TAG,"Songs count "+database.playlistSongsTable.getPlaylistSongCount(database.readableDatabase))
+        val table = database.playlistSongsTable.getAllPlaylistSongs(database.readableDatabase)
 
+        for(playlist in table){
+            Log.d(TAG,"playlist ")
+        }
         return playlistId
+    }
+    override fun updatePlaylist(playlistTitle:String,playlistId: Long):Int{
+        return database.playlistsTable.updatePlaylist(playlistId,playlistTitle,database.writableDatabase)
     }
 
     override fun deltePlaylist(playlistId: Long) {
         database.playlistSongsTable.deleteSongsByPlaylistId(playlistId,database.writableDatabase)
         database.playlistsTable.deleteByPlaylistId(playlistId,database.writableDatabase)
+    }
+
+    override fun deleteSongInPlaylist(playlist:Playlist,song:Song){
+        Log.d(TAG,"Deleted song (playlist "+playlist.id+", song "+song.id+")")
+        database.playlistSongsTable.deleteBySongIdAndPlaylistId(song.id,playlist.id,database.writableDatabase)
     }
 
     override fun getAllPlaylists(): Pair<LinkedHashMap<Long,Playlist>, ArrayList<PlaylistSongInfo>> {

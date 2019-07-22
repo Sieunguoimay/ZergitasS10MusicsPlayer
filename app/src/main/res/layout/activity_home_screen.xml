@@ -6,10 +6,13 @@
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
+        android:background="@drawable/gradient_left_right"
+
+        android:fitsSystemWindows="false"
         tools:openDrawer="start"
-        android:background="@drawable/side_nav_bar"
 >
+
+
 
     <include
             layout="@layout/app_bar_home_screen"
@@ -19,25 +22,34 @@
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/side_nav_bar"
-            android:elevation="@dimen/_2sdp"
+            android:background="@drawable/bg_splash_no_icon"
             android:id="@+id/rl_flash_screen"
     >
+
+        <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_splash"
+                android:layout_marginTop="@dimen/_50sdp"
+                android:layout_marginBottom="@dimen/_50sdp"
+                android:layout_marginStart="@dimen/_40sdp"
+                android:layout_marginEnd="@dimen/_50sdp"
+        />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"
+                android:text="MUSIC PLAYER"
                 android:layout_centerVertical="true"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_1"
+                android:textSize="@dimen/text_size_0"
                 android:id="@+id/tv_app_name"
                 android:layout_centerInParent="true"
+                android:textColor="@color/colorBackgroundLight"
+                android:fontFamily="@font/blacklisted"
         />
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/company_name"
-                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_size_3"
                 android:id="@+id/tv_company_name"
                 android:layout_centerHorizontal="true"
@@ -48,7 +60,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/designer_name"
-                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/text_size_3"
                 android:id="@+id/tv_designer_name"
                 android:layout_centerHorizontal="true"
@@ -56,6 +67,10 @@
                 android:layout_marginBottom="@dimen/_10sdp"
         />
     </RelativeLayout>
+
+
+
+
     <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="wrap_content"
@@ -63,10 +78,8 @@
             android:layout_gravity="start"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_home_screen"
-            app:menu="@menu/activity_home_screen_drawer"
-            android:background="@color/colorAbsoluteTransparency"
-            app:itemTextColor="@color/colorWhite"
-
     />
+    <!--app:menu="@menu/activity_home_screen_drawer"-->
+
 
 </android.support.v4.widget.DrawerLayout>

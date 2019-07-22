@@ -2,6 +2,7 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -11,6 +12,8 @@ import android.util.Log
 import android.view.View
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity.Companion.darkModeEnabled
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongSelectRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_song_select.*
 
@@ -21,12 +24,20 @@ class SongSelectActivity : AppCompatActivity()
     val selectedSongs = ArrayList<Song>()
     val selectedMap = LinkedHashMap<Int, Int>()
     var songList:ArrayList<Song>? = null
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        if(darkModeEnabled)
+            setTheme(R.style.AppThemeDark)
+        else
+            setTheme(R.style.AppTheme)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_song_select)
 
 
-        songList = intent.getParcelableArrayListExtra<Song>("songList")
+        songList = intent.getParcelableArrayListExtra("songList")
 
         rv_song_select.layoutManager = LinearLayoutManager(this)
         rv_song_select.itemAnimator = DefaultItemAnimator()
@@ -35,6 +46,14 @@ class SongSelectActivity : AppCompatActivity()
         cv_song_select_ok.setOnClickListener(listner)
         cv_song_select_cancel.setOnClickListener(listner)
         cv_song_select_all.setOnClickListener(listner)
+
+
+        if(darkModeEnabled)
+            iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+        else
+            iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
+
+        changeBackground()
 
         selectedMap.clear()
     }
@@ -48,8 +67,15 @@ class SongSelectActivity : AppCompatActivity()
         // press the second time we remove it from the list.
         if(song.selected)
             selectedSongs.add(song)
-        else
+        else {
             selectedSongs.remove(song)
+
+
+            if(darkModeEnabled)
+                iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+            else
+                iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
+        }
     }
 
 
@@ -80,18 +106,46 @@ class SongSelectActivity : AppCompatActivity()
                                 selectedSongs.add(song)
                             }
                         }
+                        iv_song_select_all.setImageResource(R.drawable.ic_tick)
                     }else{
                         for(song in songList!!) {
                             song.selected = false
                         }
                         selectedSongs.clear()
+
+                        if(darkModeEnabled)
+                            iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+                        else
+                            iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
                     }
                     rv_song_select.adapter?.notifyDataSetChanged()
                 }
             }
         }
     }
-
+    private fun changeBackground(){
+        if(darkModeEnabled) {
+            val sdk = Build.VERSION.SDK_INT
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                ll_song_select.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackgroundDark))
+            } else {
+                ll_song_select.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackgroundDark))
+            }
+            changeToDarkIcons()
+        }else{
+            val sdk = Build.VERSION.SDK_INT
+            if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+                ll_song_select.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackgroundLight))
+            } else {
+                ll_song_select.setBackgroundColor(ContextCompat.getColor(this, R.color.colorBackgroundLight))
+            }
+            changeToLightIcons()
+        }
+    }
+    private fun changeToLightIcons(){
+    }
+    private fun changeToDarkIcons(){
+    }
 }
 
 

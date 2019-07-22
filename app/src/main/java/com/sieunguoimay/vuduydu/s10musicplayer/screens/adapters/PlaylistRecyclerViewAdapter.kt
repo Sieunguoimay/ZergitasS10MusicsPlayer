@@ -1,6 +1,7 @@
 package com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters
 
 import android.content.Context
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,6 +15,7 @@ import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 
 
 class PlaylistRecyclerViewAdapter (
@@ -39,14 +41,24 @@ class PlaylistRecyclerViewAdapter (
         p0.tv_title.text = playlist.title
         p0.tv_sub.text = playlist.songList.size.toString()+" song(s)"
 
+
+        if(HomeScreenActivity.darkModeEnabled){
+            p0.cvTitle.setCardBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.card_color_dark,null))
+        }else
+            p0.cvTitle.setCardBackgroundColor(ResourcesCompat.getColor(context.resources,R.color.card_color,null))
+
+
         p0.cv_card.setOnClickListener {
             listener.onItemClick(p1, null,"")
         }
         p0.cv_option.setOnClickListener{
             listener.onPlaylistOptionClick(p1,it)
         }
-        if(p1 == 0&&playlist.songList[0].thumb!=null)
+        if(playlist.songList.size>0&&playlist.songList[0].thumb!=null)
             p0.iv_poster.setImageBitmap(playlist.songList[0].thumb)
+        else
+            p0.iv_poster.setImageResource(
+                if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_playlist_dark}else{R.drawable.ic_playlist})
 
         Utils.animateRecyclerView(context,p0.itemView)
     }
@@ -57,13 +69,14 @@ class PlaylistRecyclerViewAdapter (
         var cv_option: CardView
         var iv_poster:ImageView
         var cv_card: CardView
-
+        var cvTitle:CardView
         init{
             tv_title = view.findViewById(R.id.tv_playlist_title)
             tv_sub= view.findViewById(R.id.tv_playlist_sub)
             cv_option = view.findViewById(R.id.cv_playlist_options)
             iv_poster = view.findViewById(R.id.iv_playlist_poster)
             cv_card = view.findViewById(R.id.cv_playlist_card)
+            cvTitle = view.findViewById(R.id.cv_playlist_row_title)
         }
     }
 

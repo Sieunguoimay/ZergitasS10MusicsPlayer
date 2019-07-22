@@ -3,6 +3,7 @@ package com.sieunguoimay.vuduydu.s10musicplayer.models.provider
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
+import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.PlaylistSongInfo
 
 private const val TAG = "PLAYLIST_SONGS_TABLE"
@@ -95,9 +96,10 @@ class PlaylistSongsTable{
         return count
     }
 
-    fun deleteBySongIdAndPlaylistId(songId:Long, playlistId:Int,writableDatabase:SQLiteDatabase){
-        Log.d(TAG, "Deleted favourite song "+songId)
-        writableDatabase.delete(PlaylistSongInfo.TABLE_NAME, PlaylistSongInfo.COLUMN_SONG_ID+"= ? and "+PlaylistSongInfo.COLUMN_PLAYLIST_ID+"=?",Array(2){songId.toString();playlistId.toString()})
+    fun deleteBySongIdAndPlaylistId(songId:Long, playlistId:Long,writableDatabase:SQLiteDatabase){
+        Log.d(TAG, "Deleted song "+
+            writableDatabase.delete(PlaylistSongInfo.TABLE_NAME,
+                PlaylistSongInfo.COLUMN_SONG_ID+"="+songId+" and "+PlaylistSongInfo.COLUMN_PLAYLIST_ID+"="+playlistId,null))
         writableDatabase.close()
     }
 
@@ -105,5 +107,4 @@ class PlaylistSongsTable{
         writableDatabase.delete(PlaylistSongInfo.TABLE_NAME, PlaylistSongInfo.COLUMN_PLAYLIST_ID+"= ?",Array(1){id.toString()})
         writableDatabase.close()
     }
-
 }

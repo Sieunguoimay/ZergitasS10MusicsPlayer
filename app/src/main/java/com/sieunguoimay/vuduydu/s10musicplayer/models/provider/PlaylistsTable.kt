@@ -37,6 +37,11 @@ class PlaylistsTable {
 
         return id
     }
+    fun updatePlaylist(playlistId: Long,playlistTitle:String,writableDatabase:SQLiteDatabase):Int{
+        val values = ContentValues()
+        values.put(Playlist.COLUMN_TITLE, playlistTitle)
+        return writableDatabase.update(Playlist.TABLE_NAME, values,Playlist.COLUMN_ID+"=?",Array(1){playlistId.toString()})
+    }
 
     fun getPlaylist(id:Long,readableDatabase:SQLiteDatabase): Playlist {
 

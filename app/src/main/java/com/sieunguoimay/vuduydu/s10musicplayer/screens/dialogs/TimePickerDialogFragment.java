@@ -33,8 +33,8 @@ public class TimePickerDialogFragment extends AppCompatDialogFragment {
         cardView_Cancel = view.findViewById(R.id.cardView_Cancel);
 
         timePicker.setIs24HourView(true);
-        timePicker.setHour(mHour);
-        timePicker.setMinute(mMinute);
+        timePicker.setCurrentHour(mHour);
+        timePicker.setCurrentMinute(mMinute);
         builder.setView(view);
 
         final Dialog dialog = builder.create();
@@ -43,13 +43,14 @@ public class TimePickerDialogFragment extends AppCompatDialogFragment {
         cardView_Ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.setTime(timePicker.getHour(),timePicker.getMinute());
+                listener.setTime(timePicker.getCurrentHour(),timePicker.getCurrentMinute());
                 dialog.dismiss();
             }
         });
         cardView_Cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listener.onTimePickerCancel();
                 dialog.dismiss();
             }
         });
@@ -73,5 +74,6 @@ public class TimePickerDialogFragment extends AppCompatDialogFragment {
 
     public interface MyTimePickerListener{
         void setTime(int hour, int minute);
+        void onTimePickerCancel();
     }
 }

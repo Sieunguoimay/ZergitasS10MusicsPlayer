@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">S10 Music Player</string>
     <string name="company_name">Zergitas</string>
-    <string name="designer_name">VUDUYDU</string>
+    <string name="designer_name">2019</string>
     <string-array name="navigation_drawer_items_array">
         <item>Item1</item>
         <item>Item2</item>

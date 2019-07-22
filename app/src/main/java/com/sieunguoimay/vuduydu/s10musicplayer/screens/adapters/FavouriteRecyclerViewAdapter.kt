@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
 
 //https://www.androidhive.info/2016/01/android-working-with-recycler-view/
@@ -23,7 +24,7 @@ class FavouriteRecyclerViewAdapter(
                 R.layout.standard_row,
                 p0,
                 false
-            ),moreOptionListener
+            ),moreOptionListener,ListTypes.LIST_TYPE_FAVOURITE_SONGS
         )
     }
     override fun getItemCount(): Int {
@@ -32,7 +33,7 @@ class FavouriteRecyclerViewAdapter(
     override fun onBindViewHolder(p0: StandardSongViewHolder, p1: Int) {
         var song = favouriteList[p1]
 
-        p0.bind(song,p1)
+        p0.bind(song,-1,p1)
         p0.itemView.setOnClickListener{
             listener.onItemClick(Pair(p1,song))
         }

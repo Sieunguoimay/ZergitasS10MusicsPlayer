@@ -6,6 +6,7 @@
              android:layout_height="match_parent"
              tools:context=".screens.HomeScreenActivity.AllSongsScreenFragment.AllSongsFragment"
              android:background="@color/colorAbsoluteTransparency"
+             android:id="@+id/fl_all_songs_fragment"
 >
 
     <LinearLayout
@@ -18,9 +19,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tab_layout_all_songs"
-                app:tabTextColor="@color/colorWhite"
-                app:tabSelectedTextColor="@color/colorAccent"
+                app:tabSelectedTextColor="@color/textColorOrange"
                 app:tabMode="scrollable"
+                app:tabTextAppearance="@style/tab_layout_theme"
         >
 
         </android.support.design.widget.TabLayout>
