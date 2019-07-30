@@ -13,10 +13,15 @@ object FlashScreenAnimation {
         homeScreenActivity.tv_app_name.alpha = 0.0f
         homeScreenActivity.tv_company_name.alpha = 0.0f
         homeScreenActivity.tv_designer_name.alpha = 0.0f
-        homeScreenActivity.tv_app_name.animate().alpha(1.0f).setDuration(500).setListener(object: AnimatorListenerAdapter(){
+        homeScreenActivity.tv_app_name.animate().alpha(1.0f).setDuration(700).setListener(object: AnimatorListenerAdapter(){
             override fun onAnimationEnd(animation: Animator?) {
                 super.onAnimationEnd(animation)
-                animate2(homeScreenActivity)
+//                animate3(homeScreenActivity)
+                Handler().postDelayed(object:Runnable{
+                    override fun run(){
+                        closeFlashScreen(homeScreenActivity)
+                    }
+                },500)
             }
         })
     }

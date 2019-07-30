@@ -2,6 +2,7 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
@@ -45,6 +46,10 @@ class SearchFragment : Fragment() {
 
         searchBox = view.findViewById(R.id.tv_search_box)
         recyclerView = view.findViewById(R.id.rv_search_fragment)
+
+
+        if(HomeScreenActivity.darkModeEnabled)
+            searchBox!!.setTextColor(ResourcesCompat.getColor(context!!.resources,R.color.colorBackgroundLight,null))
 
 
         recyclerView!!.layoutManager = LinearLayoutManager(activity)

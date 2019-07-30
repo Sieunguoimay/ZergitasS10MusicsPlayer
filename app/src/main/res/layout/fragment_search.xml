@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/rv_search_fragment"
 
-            android:layout_marginTop="@dimen/_15sdp"
 
     >
     </android.support.v7.widget.RecyclerView>

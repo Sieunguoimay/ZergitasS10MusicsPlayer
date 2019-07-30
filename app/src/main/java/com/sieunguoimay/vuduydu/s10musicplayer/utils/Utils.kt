@@ -11,6 +11,13 @@ import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import com.sieunguoimay.vuduydu.s10musicplayer.R
+import android.view.ViewGroup
+
+
+
+
+
+
 
 object Utils {
     fun animateRecyclerView(context: Context, view: View){
@@ -77,3 +84,4 @@ fun setStatusBarColor(activity: Activity,color:Int){
         window.navigationBarColor = color
     }
 }
+

@@ -10,6 +10,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
+import com.bumptech.glide.Glide
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
@@ -49,9 +50,9 @@ class SongSelectActivity : AppCompatActivity()
 
 
         if(darkModeEnabled)
-            iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+            Glide.with(this).load(R.drawable.ic_tick_no_dark).into(iv_song_select_all)
         else
-            iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
+            Glide.with(this).load(R.drawable.ic_tick_no).into(iv_song_select_all)
 
         changeBackground()
 
@@ -72,9 +73,9 @@ class SongSelectActivity : AppCompatActivity()
 
 
             if(darkModeEnabled)
-                iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+                Glide.with(this).load(R.drawable.ic_tick_no_dark).into(iv_song_select_all)
             else
-                iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
+                Glide.with(this).load(R.drawable.ic_tick_no).into(iv_song_select_all)
         }
     }
 
@@ -106,7 +107,7 @@ class SongSelectActivity : AppCompatActivity()
                                 selectedSongs.add(song)
                             }
                         }
-                        iv_song_select_all.setImageResource(R.drawable.ic_tick)
+                        Glide.with(this@SongSelectActivity).load(R.drawable.ic_tick).into(iv_song_select_all)
                     }else{
                         for(song in songList!!) {
                             song.selected = false
@@ -114,9 +115,9 @@ class SongSelectActivity : AppCompatActivity()
                         selectedSongs.clear()
 
                         if(darkModeEnabled)
-                            iv_song_select_all.setImageResource(R.drawable.ic_tick_no_dark)
+                            Glide.with(this@SongSelectActivity).load(R.drawable.ic_tick_no_dark).into(iv_song_select_all)
                         else
-                            iv_song_select_all.setImageResource(R.drawable.ic_tick_no)
+                            Glide.with(this@SongSelectActivity).load(R.drawable.ic_tick_no).into(iv_song_select_all)
                     }
                     rv_song_select.adapter?.notifyDataSetChanged()
                 }

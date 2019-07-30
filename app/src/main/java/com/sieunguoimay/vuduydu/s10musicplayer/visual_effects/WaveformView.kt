@@ -30,7 +30,7 @@ class WaveformView(
         mForePaint.setStrokeWidth(strokeWidth)
         mForePaint.setAntiAlias(true)
         mForePaint.setColor(Color.rgb(240, 241, 241))
-        image = BitmapFactory.decodeResource(resources, R.drawable.ic_song);
+        image = BitmapFactory.decodeResource(resources, R.drawable.ic_songs);
     }
 
     override fun onDraw(canvas: Canvas){

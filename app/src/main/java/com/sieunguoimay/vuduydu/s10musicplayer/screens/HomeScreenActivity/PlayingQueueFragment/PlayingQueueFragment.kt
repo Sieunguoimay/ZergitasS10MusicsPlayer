@@ -30,6 +30,7 @@ class PlayingQueueFragment: Fragment(), HomeScreenActivity.ServiceSongQueueCallb
         return initView(inflater.inflate(R.layout.fragment_playing_queue, container, false))
     }
 
+
     private fun initView(view : View): View {
 
         recyclerView = view.findViewById(R.id.rv_playing_queue_fragment)
@@ -55,17 +56,32 @@ class PlayingQueueFragment: Fragment(), HomeScreenActivity.ServiceSongQueueCallb
             a.itemTouchHelper.attachToRecyclerView(recyclerView)
         }
 
+        Log.d(TAG,"created QUEUE FRAGMENT")
         return view
+    }
+    override fun onStart() {
+        callback?.fragmentReady()
+        Log.d(TAG,"started QUEUE FRAGMENT")
+        super.onStart()
     }
     override fun onStop(){
         //homeScreenActivity!!.queueFragmentOpened = false
-        Log.d(TAG,"GOODBYE PLAYING QUEUE FRAGMENT")
+        Log.d(TAG,"Stopped QUEUE FRAGMENT")
         super.onStop()
     }
 
+    override fun onDestroy() {
+        Log.d(TAG,"Destroyed QUEUE FRAGMENT ")
+        super.onDestroy()
+    }
     override fun notifyQueueChanged() {
         recyclerView?.adapter!!.notifyDataSetChanged()
         (recyclerView?.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
             homeScreenActivity!!.aCopyOfCurrentSongIndexToCarryWithinThisClass, Utils.DPToPX(180,activity!!))
     }
+
+    interface OnReadyCallback{
+        fun fragmentReady()
+    }
+    var callback:OnReadyCallback?= null
 }

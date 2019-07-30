@@ -10,10 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import kotlinx.android.synthetic.main.activity_song_select.*
 
 class SongSelectRecyclerViewAdapter(
     var listener:SongSelectListener,
@@ -38,27 +40,25 @@ class SongSelectRecyclerViewAdapter(
         p0.title.text = song.title
         p0.sub.text = song.artist
 
-        p0.iv_more.setImageResource(
-            if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_more_white}else{R.drawable.ic_more}
-        )
+        Glide.with(context).load(if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_more_white}else{R.drawable.ic_more}).into(p0.iv_more)
 
 
 
         if(song.thumb!=null)
-            p0.thumbail.setImageBitmap(song.thumb)
+            Glide.with(context).load(song.thumb).into(p0.thumbail)
         else
-            p0.thumbail.setImageResource(R.drawable.ic_songs)
+            Glide.with(context).load(R.drawable.ic_songs).into(p0.thumbail)
 
         if(song.selected){
             p0.background.setBackgroundColor(ContextCompat.getColor(context,R.color.colorTransparentLight))
-            p0.selectState.setImageResource(R.drawable.ic_tick)
+            Glide.with(context).load(R.drawable.ic_tick).into(p0.selectState)
         }else{
             p0.background.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAbsoluteTransparency))
 
             if(HomeScreenActivity.darkModeEnabled)
-                p0.selectState.setImageResource(R.drawable.ic_tick_no_dark)
+                Glide.with(context).load(R.drawable.ic_tick_no_dark).into(p0.selectState)
             else
-                p0.selectState.setImageResource(R.drawable.ic_tick_no)
+                Glide.with(context).load(R.drawable.ic_tick_no).into(p0.selectState)
         }
 
         p0.cv_select.setOnClickListener{

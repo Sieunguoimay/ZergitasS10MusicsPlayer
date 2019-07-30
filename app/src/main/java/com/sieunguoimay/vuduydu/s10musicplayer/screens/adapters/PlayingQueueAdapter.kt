@@ -2,21 +2,26 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import pl.droidsonroids.gif.GifImageView
 import java.util.*
 import kotlin.collections.ArrayList
-
+private const val TAG = "PLAYING_QUEUE_ADAPTER"
 class PlayingQueueAdapter (
     var listener:QueueListener,
     var queueList:ArrayList<Song>,
@@ -28,6 +33,10 @@ class PlayingQueueAdapter (
     SimpleItemTouchHelperCallback.ItemTouchHelperAdapter
 {
     var itemTouchHelper = ItemTouchHelper(SimpleItemTouchHelperCallback(this))
+
+    init{
+        Log.d(TAG,"Created Playing queue adapter")
+    }
 
     override fun onItemMove(fromPos: Int, toPos: Int) {
         if(toPos<= currentSongIndex){
@@ -66,13 +75,15 @@ class PlayingQueueAdapter (
         notifyItemMoved(fromPos, toPos)
     }
 
+
+
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): QueueViewHolder {
         return QueueViewHolder(
             LayoutInflater.from(p0.context).inflate(
                 R.layout.queue_row,
                 p0,
                 false
-            )
+            ),context
         )
     }
     override fun getItemCount(): Int {
@@ -84,39 +95,57 @@ class PlayingQueueAdapter (
         p0.title.text = song.title
         p0.sub.text = song.artist
         if(song.thumb!=null)
-            p0.thumbail.setImageBitmap(song.thumb)
+            Glide.with(context).load(song.thumb).into(p0.thumbail)
         else
-            p0.thumbail.setImageResource(R.drawable.ic_songs)
+            Glide.with(context).load(R.drawable.ic_songs).into(p0.thumbail)
 
-
-        p0.ivMoreButton.setImageResource(
-            if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_more_white}else{R.drawable.ic_more}
-        )
 
         if(currentSongIndex==p0.adapterPosition){
-            p0.itemView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorTransparentLight))
+            p0.title.setTextColor(ContextCompat.getColor(context,R.color.textColorOrange))
+            p0.sub.setTextColor(ContextCompat.getColor(context,R.color.textColorOrange))
+            p0.ivPlaying?.visibility = View.VISIBLE
+
+            if (MusicPlayerService.musicPlayerGlobalState) {
+                Glide.with(context).asGif().load(R.drawable.ic_playing_gif_trans).into(p0.ivPlaying!!)
+            } else {
+                Glide.with(context).load(R.drawable.ic_playing).into(p0.ivPlaying!!)
+            }
         }else{
-            p0.itemView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAbsoluteTransparency))
+            p0.title.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundLight))
+            p0.sub.setTextColor(ContextCompat.getColor(context,R.color.colorBackgroundLight))
+            p0.ivPlaying?.visibility = View.GONE
         }
 
         if(p0.adapterPosition>currentSongIndex&&!fakeAdapter){
+            p0.moreButton.isClickable = true
+            p0.dragButton.isClickable = true
+            p0.moreButton.alpha = 1.0f
+            p0.dragButton.alpha = 1.0f
+            p0.title.alpha = 1.0f
+            p0.sub.alpha = 1.0f
+            p0.thumbail.alpha = 1.0f
 
-            p0.dragButton.visibility = View.VISIBLE
-            p0.moreButton.visibility = View.VISIBLE
             p0.dragButton.setOnTouchListener { v, event ->
                 if(event.actionMasked==MotionEvent.ACTION_DOWN){
-                    itemTouchHelper.startDrag(p0)
+                    if(p0.adapterPosition>currentSongIndex)
+                        itemTouchHelper.startDrag(p0)
                 }
                 false
             }
 
             p0.moreButton.setOnClickListener{
-                listener.onMoreButtonClick(it,p0.adapterPosition)
+                if(p0.adapterPosition>currentSongIndex)
+                    listener.onMoreButtonClick(it,p0.adapterPosition)
             }
 
         }else{
-            p0.moreButton.visibility = View.INVISIBLE
-            p0.dragButton.visibility = View.INVISIBLE
+            p0.moreButton.isClickable = false
+            p0.dragButton.isClickable = false
+            p0.moreButton.alpha = 0.5f
+            p0.dragButton.alpha = 0.5f
+            p0.title.alpha = 0.5f
+            p0.sub.alpha = 0.5f
+            p0.thumbail.alpha = 0.5f
         }
 
 
@@ -132,6 +161,7 @@ class PlayingQueueAdapter (
 
             listener.onItemClick(p0.adapterPosition,fakeAdapter)
             currentSongIndex = p0.adapterPosition
+            Log.d(TAG,"Hey queue item " + p0.adapterPosition)
         }
         p0.dragButton.setOnDragListener { v, event ->
             listener.onDrag(v,event)
@@ -140,13 +170,15 @@ class PlayingQueueAdapter (
         Utils.animateRecyclerView(context,p0.itemView)
     }
 
-    class QueueViewHolder(view: View):RecyclerView.ViewHolder(view){
+    class QueueViewHolder(view: View,context: Context):RecyclerView.ViewHolder(view){
         var title: TextView
         var sub: TextView
         var thumbail: ImageView
         var dragButton: CardView
         var moreButton:CardView
         var ivMoreButton:ImageView
+        var ivPlaying:ImageView?=null
+        var cvQueueRow:CardView
         init{
             title = view.findViewById(R.id.tv_queue_row_title)
             sub= view.findViewById(R.id.tv_queue_row_sub_text)
@@ -154,8 +186,12 @@ class PlayingQueueAdapter (
             dragButton = view.findViewById(R.id.cv_queue_row_drag)
             moreButton = view.findViewById(R.id.cv_queue_row_options)
             ivMoreButton = view.findViewById(R.id.iv_queue_row_options)
+            cvQueueRow = view.findViewById(R.id.cv_queue_row)
+            ivPlaying = view.findViewById(R.id.iv_playing)
         }
+
     }
+
     interface QueueListener{
         fun onDrag(view:View?, event:DragEvent?)
         fun onItemClick(item:Int,fakeAdapter: Boolean)

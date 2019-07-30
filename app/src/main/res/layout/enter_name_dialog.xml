@@ -33,7 +33,7 @@
             android:layout_marginEnd="@dimen/_20sdp"
     >
         <android.support.v7.widget.CardView
-                android:layout_width="@dimen/_50sdp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/_30sdp"
                 app:cardElevation="@dimen/_0sdp"
                 android:foreground="?android:attr/selectableItemBackground"

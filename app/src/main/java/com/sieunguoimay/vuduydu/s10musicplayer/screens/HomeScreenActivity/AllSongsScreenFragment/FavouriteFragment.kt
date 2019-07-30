@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
@@ -29,10 +30,8 @@ class FavouriteFragment : Fragment() {
     private fun initView(view :View):View{
         val recyclerView = view.findViewById<RecyclerView>(R.id.rv_favourite_fragment)
         val playAllButton = view.findViewById<CardView>(R.id.cv_play_all_favourite)
-
-        view.findViewById<ImageView>(R.id.iv_play_all_favourite).setImageResource(
-            if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_play_all_dark}else{R.drawable.ic_play_all}
-        )
+        Glide.with(activity as HomeScreenActivity).load(if(HomeScreenActivity.darkModeEnabled){R.drawable.ic_play_all_dark}else{R.drawable.ic_play_all}).into(
+            view.findViewById<ImageView>(R.id.iv_play_all_favourite))
         playAllButton.setOnClickListener{
             (activity as HomeScreenActivity).onPlayAllButtonClickedInFavouriteSongFragment()
         }

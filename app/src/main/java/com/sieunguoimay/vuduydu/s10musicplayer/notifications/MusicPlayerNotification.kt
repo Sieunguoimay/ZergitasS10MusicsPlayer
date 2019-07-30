@@ -7,7 +7,6 @@ import android.content.Intent
 import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-import android.support.v4.content.ContextCompat
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
@@ -16,11 +15,8 @@ import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
 import com.sieunguoimay.vuduydu.s10musicplayer.services.ServicesActions
-import android.R.string.cancel
-import android.support.v4.content.ContextCompat.getSystemService
 import android.app.NotificationManager
-
-
+import com.sieunguoimay.vuduydu.s10musicplayer.utils.getCircleBitmap
 
 
 //this notification will live along with the service as a loyal slave
@@ -34,6 +30,7 @@ class MusicPlayerNotification(
 ) {
     companion object{
         val INTENT_ACTION_FROM_NOTIFICATION = "from_notification"
+        var foregroundRunning:Boolean = false
     }
 
     private var notification:Notification? = null
@@ -41,7 +38,6 @@ class MusicPlayerNotification(
     private var remoteViews2:RemoteViews
     init{
         //here we create the notification
-
         //call this one time, but more no problem
         createNotificationChannel()
         remoteViews = createRemoteViews()
@@ -56,7 +52,7 @@ class MusicPlayerNotification(
 
 
         val builder = NotificationCompat.Builder(context, context.resources.getString(R.string.CHANNEL_ID))
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.ic_noti_status_bar)
             .setCustomBigContentView(updateRemoteViews(false,null))
             .setContent(updateRemoteViews2(null))
             .setContentIntent(pendingIntent)
@@ -87,7 +83,7 @@ class MusicPlayerNotification(
         val deleteIntent = PendingIntent.getBroadcast(context.applicationContext, 0, Intent(context, NotificationDismissReceiver::class.java), 0)
 
         val builder = NotificationCompat.Builder(context, context.resources.getString(R.string.CHANNEL_ID))
-            .setSmallIcon(R.drawable.ic_song)
+            .setSmallIcon(R.drawable.ic_noti_status_bar)
             .setCustomBigContentView(updateRemoteViews(showCloseButton,song, state))
             .setContent(updateRemoteViews2(song, state))
             .setContentIntent(pendingIntent)
@@ -114,10 +110,13 @@ class MusicPlayerNotification(
     fun stopForeground(){
         service.stopForeground(false)
         Log.d(TAG,"Stop the foreground")
+
+        foregroundRunning = false
     }
     fun startForeground(){
         service.startForeground(NOTIFICATION_ID,notification)
         Log.d(TAG,"Start the foreground")
+        foregroundRunning = true
     }
 
 
@@ -145,9 +144,6 @@ class MusicPlayerNotification(
         remoteViews.setOnClickPendingIntent(R.id.bt_noti_next,createPendingIntentWithAction(ServicesActions.NEXT))
         remoteViews.setOnClickPendingIntent(R.id.bt_noti_prev,createPendingIntentWithAction(ServicesActions.PREV))
         remoteViews.setOnClickPendingIntent(R.id.bt_noti_love,createPendingIntentWithAction(ServicesActions.LOVE))
-
-
-
         return remoteViews
     }
 
@@ -155,12 +151,12 @@ class MusicPlayerNotification(
         if(song==null)return remoteViews
         remoteViews.setTextViewText(R.id.tv_noti_song_title,song.title)
         if(song.thumb!=null)
-            remoteViews.setImageViewBitmap(R.id.iv_noti_thumb,song.thumb)
+            remoteViews.setImageViewBitmap(R.id.iv_noti_thumb, getCircleBitmap(song.thumb!!))
         else
-            remoteViews.setImageViewResource(R.id.iv_noti_thumb,R.drawable.ic_library_music_24dp)
+            remoteViews.setImageViewResource(R.id.iv_noti_thumb,R.drawable.ic_songs)
 
-        remoteViews.setImageViewResource(R.id.iv_noti_state,if(state){R.drawable.ic_pause}else{R.drawable.ic_play})
-        remoteViews.setImageViewResource(R.id.iv_noti_love,if(song.liked){R.drawable.ic_favorite_24dp}else{R.drawable.ic_favorite_border_24dp})
+        remoteViews.setImageViewResource(R.id.iv_noti_state,if(state){R.drawable.ic_pause_music_player}else{R.drawable.ic_play_music_player})
+        remoteViews.setImageViewResource(R.id.iv_noti_love,if(song.liked){R.drawable.ic_like_click}else{R.drawable.ic_like_white})
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O&&showCloseButton) {
             val deleteIntent = PendingIntent.getBroadcast(context.applicationContext, 0, Intent(context, NotificationDismissReceiver::class.java), 0)
@@ -175,8 +171,8 @@ class MusicPlayerNotification(
         if(song==null)return remoteViews2
         remoteViews2.setTextViewText(R.id.tv_noti_song_title,song.title)
         remoteViews2.setViewVisibility(R.id.iv_noti_thumb, View.GONE)
-        remoteViews2.setImageViewResource(R.id.iv_noti_state,if(state){R.drawable.ic_pause}else{R.drawable.ic_play})
-        remoteViews2.setImageViewResource(R.id.iv_noti_love,if(song.liked){R.drawable.ic_favorite_24dp}else{R.drawable.ic_favorite_border_24dp})
+        remoteViews2.setImageViewResource(R.id.iv_noti_state,if(state){R.drawable.ic_pause_music_player}else{R.drawable.ic_play_music_player})
+        remoteViews2.setImageViewResource(R.id.iv_noti_love,if(song.liked){R.drawable.ic_like_click}else{R.drawable.ic_like_white})
         return remoteViews2
     }
 

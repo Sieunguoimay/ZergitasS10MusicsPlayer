@@ -16,7 +16,7 @@
 
 
     <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+    <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -32,6 +32,7 @@
                 android:layout_weight="1"
         />
         <LinearLayout
+                android:layout_below="@+id/pb_player_screen_progress_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -47,22 +48,42 @@
                     android:id="@+id/iv_player_bar_thumb"
                     android:layout_margin="@dimen/_5sdp"
             />
-            <TextView
-                    android:layout_width="wrap_content"
+
+            <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="@string/hello_blank_fragment"
                     android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/_10sdp"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/text_size_2"
-                    android:id="@+id/tv_player_peek_title"
-                    android:singleLine="true"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-            />
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:orientation="vertical"
+            >
+
+                <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hello_blank_fragment"
+                        android:textColor="@color/textColorOrange"
+                        android:textSize="@dimen/text_size_2"
+                        android:id="@+id/tv_player_peek_title"
+                        android:singleLine="true"
+                        android:ellipsize="marquee"
+                        android:marqueeRepeatLimit="marquee_forever"
+                        android:scrollHorizontally="true"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textStyle="bold"
+                />
+                <TextView
+                        android:id="@+id/tv_player_peek_artist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Song name"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="@dimen/text_size_4"
+                        android:maxLines="1"
+                />
+            </LinearLayout>
+
             <android.support.v7.widget.CardView
                     android:id="@+id/cv_player_bar_play"
                     android:layout_width="@dimen/_50sdp"
@@ -72,6 +93,7 @@
                     android:focusable="true"
                     app:cardElevation="@dimen/_0sdp"
                     app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+                    app:cardCornerRadius="@dimen/_25sdp"
             >
 
                 <ImageView
@@ -96,6 +118,7 @@
                     android:focusable="true"
                     app:cardElevation="@dimen/_0sdp"
                     app:cardBackgroundColor="@color/colorAbsoluteTransparency"
+                    app:cardCornerRadius="@dimen/_25sdp"
             >
 
                 <ImageView
@@ -110,7 +133,7 @@
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -145,7 +168,9 @@
                             android:layout_height="wrap_content"
                             android:text="Song name"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_size_2"
+                            android:textSize="@dimen/text_size_1"
+
+
                             android:singleLine="true"
                             android:ellipsize="marquee"
                             android:marqueeRepeatLimit="marquee_forever"
@@ -153,6 +178,7 @@
 
                             android:focusable="true"
                             android:focusableInTouchMode="true"
+                            android:textStyle="bold"
                     />
 
                     <TextView
@@ -161,7 +187,7 @@
                             android:layout_height="wrap_content"
                             android:text="Song name"
                             android:textColor="@color/colorWhite"
-                            android:textSize="@dimen/text_size_4"
+                            android:textSize="@dimen/text_size_3"
                             android:maxLines="1"
                     />
 
@@ -215,6 +241,7 @@
                         android:id="@+id/iv_player_screen_photo"
                         android:layout_gravity="center"
                 />
+
                 <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -321,7 +348,9 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_20sdp"
+                android:layout_marginStart="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
         >
             <TextView
                     android:id="@+id/tv_time"
@@ -331,7 +360,7 @@
                     android:textColor="@color/colorWhite"
             />
 
-            <SeekBar
+            <android.support.v7.widget.AppCompatSeekBar
                     android:id="@+id/sb_player_screen_seek_bar"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -339,6 +368,9 @@
                     android:progress="200"
                     android:layout_weight="1"
                     android:layout_gravity="center"
+                    android:progressDrawable="@drawable/seek_bar_progress"
+                    android:minHeight="@dimen/_3sdp"
+                    android:maxHeight="@dimen/_3sdp"
             />
             <TextView
                     android:id="@+id/tv_duration"
@@ -346,11 +378,14 @@
                     android:layout_height="wrap_content"
                     android:text="05:00"
                     android:textColor="@color/colorWhite"
+
             />
         </LinearLayout>
         <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="@dimen/_80sdp"
+                android:gravity="center_vertical"
+        >
 
         <android.support.v7.widget.CardView
                 android:layout_width="@dimen/_60sdp"
@@ -362,8 +397,7 @@
                 android:clickable="true"
                 app:cardCornerRadius="@dimen/_25sdp"
                 app:cardBackgroundColor="#00ffffff"
-                android:layout_gravity="bottom"
-
+                android:layout_centerVertical="true"
 
         >
             <ImageView
@@ -377,9 +411,8 @@
         </android.support.v7.widget.CardView>
         <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:layout_marginBottom="@dimen/_20sdp"
                 android:layout_centerHorizontal="true"
         >
 
@@ -482,8 +515,7 @@
                     app:cardCornerRadius="@dimen/_25sdp"
                     app:cardBackgroundColor="#00ffffff"
                     android:layout_alignParentEnd="true"
-                    android:layout_gravity="end|bottom"
-
+                    android:layout_centerVertical="true"
             >
                 <ImageView
                         android:layout_width="@dimen/_30sdp"

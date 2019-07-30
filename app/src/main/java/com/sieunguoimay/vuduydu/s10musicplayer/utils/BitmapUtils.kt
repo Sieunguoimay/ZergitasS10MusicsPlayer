@@ -13,6 +13,11 @@ import android.os.Environment.DIRECTORY_PICTURES
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.RectF
+
+
 
 
 inline fun Bitmap.scaleAndCropCenter(w: Int, h: Int): Bitmap {
@@ -86,3 +91,21 @@ fun cropCircleBitmap(bitmap: Bitmap):Bitmap{
 }
 
 
+fun getCircleBitmap(bitmap: Bitmap): Bitmap {
+    val output = Bitmap.createBitmap(bitmap.width, bitmap.height,bitmap.config)
+    val canvas = Canvas(output)
+
+    val color = Color.RED
+    val paint = Paint()
+    val rect = Rect(0, 0, bitmap.width, bitmap.height)
+    val rectF = RectF(rect)
+
+    paint.isAntiAlias = true
+    canvas.drawARGB(0, 0, 0, 0)
+    paint.color = color
+    canvas.drawOval(rectF, paint)
+
+    paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+    canvas.drawBitmap(bitmap, rect, rect, paint)
+    return output
+}

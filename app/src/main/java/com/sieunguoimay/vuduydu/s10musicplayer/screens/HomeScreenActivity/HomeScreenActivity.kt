@@ -8,7 +8,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -29,7 +31,9 @@ import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.CardView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SwitchCompat
 import android.widget.*
+import com.bumptech.glide.Glide
 import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
 import kotlinx.android.synthetic.main.player_bar_home_screen.*
 import com.sieunguoimay.vuduydu.s10musicplayer.models.DatabaseModel
@@ -39,6 +43,7 @@ import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.notifications.MusicPlayerNotification
+import com.sieunguoimay.vuduydu.s10musicplayer.notifications.MusicPlayerNotification.Companion.foregroundRunning
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.AllSongsFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.PlaylistFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils.FlashScreenAnimation
@@ -48,6 +53,7 @@ import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.*
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs.MoreOptionsDialog
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs.TimePickerDialogFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.*
+import com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.AnimationEffects
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.fragment_all_songs.*
 
@@ -112,6 +118,8 @@ class HomeScreenActivity : AppCompatActivity()
     lateinit var favouriteAdapter: FavouriteRecyclerViewAdapter
     private var favouriteList = ArrayList<Song>()
     private var favouriteMap = LinkedHashMap<Int ,Long>()
+    private var favouriteMap2 = LinkedHashMap<Long ,Int>()
+    private var favouriteListChanged:Boolean  = false
 
     lateinit var playlistAdapter: PlaylistRecyclerViewAdapter
     private var playlistList = ArrayList<Playlist>()
@@ -133,8 +141,6 @@ class HomeScreenActivity : AppCompatActivity()
 
 
     var headerView:View? = null
-
-
 
 
 
@@ -172,23 +178,22 @@ class HomeScreenActivity : AppCompatActivity()
     override fun onPause() {
         super.onPause()
         Log.d(TAG,"PAUSED")
-
-//        if(queueFragmentOpened)
-//            supportFragmentManager.beginTransaction().remove(playingQueueFragment!!).commit()
     }
     override fun onStop() {
         //checking for binding already inside this function
         stopped = true
         unbindServiceIfExist()
-        queueFragmentOpened = false
-        showPosterView()
+        //showPosterView()
 
         Log.d(TAG,"Stopped")
         super.onStop()
     }
     override fun onDestroy() {
-        unbindServiceIfExist()
+        //unbindServiceIfExist()
         Log.d(TAG,"Destroyed")
+        if(MusicPlayerService.serviceStarted&&!foregroundRunning){
+            MusicPlayerService.stopStartService(this)
+        }
         super.onDestroy()
     }
 
@@ -257,6 +262,8 @@ class HomeScreenActivity : AppCompatActivity()
             if(MusicPlayerService.serviceBound){
                 if(v?.id==cv_player_bar_play.id||v?.id==bt_state.id) {
 
+                    AnimationEffects.touchBoundEffect(cv_player_bar_play)
+                    AnimationEffects.touchBoundEffect(bt_state)
                     if(service?.musicPlayer!!.isPlaying)
                         service?.pauseMusicPlayer()
                     else {
@@ -277,6 +284,7 @@ class HomeScreenActivity : AppCompatActivity()
                         }
                         cv_love.id->{
                             databasePresenter.likeOrUnlike(service?.getCurrentSong()!!)
+                            AnimationEffects.touchBoundEffect(cv_love)
                         }
                     }
                 }
@@ -296,9 +304,11 @@ class HomeScreenActivity : AppCompatActivity()
                 cv_player_screen_playing_queue.id->{
                     if(!queueFragmentOpened) {
                         openPlayingQueueFragment()
+                        Log.d(TAG,"Touch to open new queue")
                     }else{
                         showPosterView()
                         showQueueView()
+                        Log.d(TAG,"Touch to open existing queue")
                     }
                 }
 
@@ -536,6 +546,7 @@ class HomeScreenActivity : AppCompatActivity()
         }
 
         override fun onMoreButtonClick(view:View,index:Int) {
+
             MoreOptionsDialog.showPopupWindowQueueItem(this@HomeScreenActivity,view,index,this@HomeScreenActivity,false)
         }
 
@@ -600,7 +611,6 @@ class HomeScreenActivity : AppCompatActivity()
 
 
     private fun openPlayingQueueFragment(){
-        Log.d(TAG,"Touch playing queue")
         if(!queueFragmentOpened) {
             playingQueueFragment = PlayingQueueFragment()
             replaceFragment(R.id.rl_queue_display,playingQueueFragment!!)
@@ -608,14 +618,13 @@ class HomeScreenActivity : AppCompatActivity()
             queueFragmentOpened = true
 
             rl_player_screen_poster.animate().x(-rl_player_screen_poster.width.toFloat())
-            iv_queue_or_poster.setImageResource(R.drawable.ic_playlist_white_click)
+            Glide.with(applicationContext).load(R.drawable.ic_playlist_white_click).into(iv_queue_or_poster)
         }
     }
 
 
     fun doSomethingOnServiceBound(){
         queueAdapter = PlayingQueueAdapter(queueItemListener, service?.songList!!,this,service?.currentSongIndex!!,false)
-
         //replace the existing playing queue fragment
         if(queueFragmentOpened) {
             val temp = PlayingQueueFragment()
@@ -625,6 +634,7 @@ class HomeScreenActivity : AppCompatActivity()
         }
 
         service?.waveformVisualizer?.waveformView = wv_player_screen
+        service?.databasePresenter = databasePresenter
 //        service?.musicPlayerNotification?.updateNotificationView(
 //            songList[aCopyOfCurrentSongIndexToCarryWithinThisClass],
 //            service?.musicPlayer?.isPlaying!!,false)
@@ -639,19 +649,29 @@ class HomeScreenActivity : AppCompatActivity()
     //on loaded song list from MusicLoadingModel content resolver
     //we notify the data set adapter and we trigger the favourite song loading from SQLite to start
     override fun onLoadedSongList() {
-        Log.d(TAG,"Loaded all songs with artists "+artistList.size)
         adapter.notifyDataSetChanged()
         databasePresenter.getFavouriteSongs(favouriteList, songList, songMap,favouriteMap)
         databasePresenter.getAllPlaylists(playlistList,playlistSongMapList,songList, songMap)
-        SongIndexManager.create(songMap,favouriteMap)
-        SongIndexManager.reset(false,songList.size)
 
-        queueAdapter = PlayingQueueAdapter(queueItemListener, songList,this, 0,true)
+        for((i,song) in favouriteList.withIndex()) favouriteMap2.put(song.id,i)
+
+
+        if(!MusicPlayerService.serviceRunning)
+            queueAdapter = PlayingQueueAdapter(queueItemListener, songList,this, 0,true)
 
         if(!MusicPlayerService.serviceBound)
             updateViewOnNewSong(false,songList[0],0,0,false)
-    }
 
+
+        if(songList.size>0) {
+            tv_player_peek_title.text = songList[0].title
+            tv_player_peek_artist.text = songList[0].artist
+            tv_player_screen_title.text = songList[0].title
+            tv_player_screen_artist.text = songList[0].artist
+        }
+        Log.d(TAG,"Loaded all songs with artists "+artistList.size)
+
+    }
 
     override fun showErrorMessage() {
         Log.d(TAG,"Something went wrong with loading music")
@@ -663,12 +683,13 @@ class HomeScreenActivity : AppCompatActivity()
     }
 
 
-
     //override from service to update views
     override fun updateViewOnNewSong(state:Boolean,song: Song,newSongIndex:Int, oldSongIndex:Int, shuffleNext:Boolean) {
         super.updateViewOnNewSong(state,song,newSongIndex, oldSongIndex,shuffleNext)
+        if(!MusicPlayerService.serviceBound)return
 
         tv_player_peek_title.text = song.title
+        tv_player_peek_artist.text = song.artist
         tv_player_screen_title.text = song.title
         tv_player_screen_artist.text = song.artist
 
@@ -685,27 +706,36 @@ class HomeScreenActivity : AppCompatActivity()
 
             if(iv_player_screen_photo.width>0) {
                 Blurry.with(this).radius(100).async()
-                    .from(song.thumb!!.scaleAndCropCenter(Utils.DPToPX(iv_player_screen_photo.width,this), Utils.DPToPX(iv_player_screen_photo.height,this)))
+                    .from(song.thumb!!.scaleAndCropCenter(Utils.DPToPX(song.thumb!!.width,this), Utils.DPToPX(song.thumb!!.height,this)))
                     .into(iv_player_screen_photo)
             }else{
                 Blurry.with(this).radius(100).async()
-                    .from(song.thumb!!.scaleAndCropCenter(Utils.DPToPX(300,this), Utils.DPToPX(300,this)))
+                    .from(song.thumb!!.scaleAndCropCenter(Utils.DPToPX(song.thumb!!.width,this), Utils.DPToPX(song.thumb!!.height,this)))
                     .into(iv_player_screen_photo)
             }
 
-            wv_player_screen.image = cropCircleBitmap(song.thumb!!)
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                wv_player_screen.image = cropCircleBitmap(song.thumb!!)
+            }else{
+                wv_player_screen.image = song.thumb!!
+            }
         }else{
-            iv_player_bar_thumb.setImageResource(R.drawable.ic_songs)
-            wv_player_screen.image = cropCircleBitmap(drawableToBitmap(ContextCompat.getDrawable(this,R.drawable.ic_songs)!!))
+            Glide.with(applicationContext).load(R.drawable.ic_songs).into(iv_player_bar_thumb)
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                wv_player_screen.image =
+                    BitmapFactory.decodeResource(resources, R.drawable.ic_songs_large)
+            }else{
+                wv_player_screen.image =
+                    BitmapFactory.decodeResource(resources, R.drawable.ic_songs_large)
+            }
         }
-        iv_love.setImageResource(if(song.liked){R.drawable.ic_like_click}else{R.drawable.ic_like_white})
+        Glide.with(applicationContext).load(if(song.liked){R.drawable.ic_like_click}else{R.drawable.ic_like_white}).into(iv_love)
 
-        notifyAdapterOnItemChanged(oldSongIndex,newSongIndex,shuffleNext)
-
+        notifyAdapterOnItemChanged(song,oldSongIndex, newSongIndex, shuffleNext)
     }
 
 
-    private fun notifyAdapterOnItemChanged(oldSongIndex: Int,newSongIndex: Int, shuffleNext:Boolean = false){
+    private fun notifyAdapterOnItemChanged(song:Song,oldSongIndex: Int,newSongIndex: Int, shuffleNext:Boolean = false){
         if(shuffleNext){
             Log.d(TAG,"old song "+oldSongIndex+" new song "+newSongIndex)
             if(oldSongIndex<newSongIndex){
@@ -718,19 +748,48 @@ class HomeScreenActivity : AppCompatActivity()
             queueAdapter?.notifyItemChanged(newSongIndex)
         }
         queueAdapter?.currentSongIndex = newSongIndex
+
+
+        val currentSongIndex = songMap[song.id]!!
+
+        if(MusicPlayerService.serviceBound) {
+            if(previousSongIndex!=-1&&currentSongIndex!=previousSongIndex){
+                songList[previousSongIndex].isPlaying = false
+                adapter.notifyItemChanged(previousSongIndex)
+            }
+            songList[currentSongIndex].isPlaying = true
+            adapter.notifyItemChanged(currentSongIndex)
+            previousSongIndex = currentSongIndex
+            favouriteAdapter.notifyDataSetChanged()
+
+            queueAdapter?.notifyItemChanged(service?.currentSongIndex!!)
+        }
+    }
+    var previousSongIndex  = -1
+
+    override fun updateViewOnStateChange(state: Boolean,song:Song) {
+        if(!MusicPlayerService.serviceBound) return
+
+        Glide.with(applicationContext).load(if(state){R.drawable.ic_pause_music_player}else{R.drawable.ic_play_music_player}).into(iv_state)
+        Glide.with(applicationContext).load(if(state){R.drawable.ic_pause}else{R.drawable.ic_play_music}).into(iv_player_bar_state)
+
+        if(MusicPlayerService.serviceBound) {
+            adapter.notifyItemChanged(songMap[song.id]!!)
+            if(favouriteMap2.size>0&&song.liked)
+                favouriteAdapter.notifyItemChanged(favouriteMap2[song.id]!!)
+
+            queueAdapter?.notifyItemChanged(service?.currentSongIndex!!)
+        }
     }
 
-    override fun updateViewOnStateChange(state: Boolean) {
-        iv_state.setImageResource(if(state){R.drawable.ic_pause_music_player}else{R.drawable.ic_play_music_player})
-        iv_player_bar_state.setImageResource(if(state){R.drawable.ic_pause}else{R.drawable.ic_play_music})
-    }
 
-    override fun updateOnLikeFromNotification(song: Song) {
-        if(song.liked)
-            updateOnLike(song)
-        else
-            updateOnUnlike(song)
-    }
+//    override fun updateOnLikeFromNotification(song: Song) {
+//        if(!MusicPlayerService.serviceBound)return
+//        if(song.liked)
+//            updateOnLike(song)
+//        else
+//            updateOnUnlike(song)
+//    }
 
     override fun onJumpFromOneEndToTheOther() {
         if(serviceSongQueueCallback!=null){
@@ -741,34 +800,35 @@ class HomeScreenActivity : AppCompatActivity()
 
     //favourite song implementation
     override fun updateOnLike(song:Song) {
-        iv_love.setImageResource(R.drawable.ic_like_click)
-
+        if(!MusicPlayerService.serviceBound)return
+        Log.d(TAG,"updateOnLike")
+        Glide.with(applicationContext).load(R.drawable.ic_like_click).into(iv_love)
 
         favouriteList.add(song)
         favouriteMap.put(favouriteList.size-1,song.id)
+        favouriteMap2.put(song.id,favouriteList.size-1)
         favouriteAdapter.notifyItemInserted(favouriteList.size-1)
 
-        //update the notification from here
-        if(MusicPlayerService.serviceBound){
-            service?.updateLikeOnNotification()
-        }
+        favouriteListChanged = true
+        service?.updateNotificationOnLike(song)
+
     }
 
     override fun updateOnUnlike(song:Song) {
-        iv_love.setImageResource(R.drawable.ic_like_white)
-
+        if(!MusicPlayerService.serviceBound)return
+        Glide.with(applicationContext).load(R.drawable.ic_like_white).into(iv_love)
         for((index, fs) in favouriteList.withIndex()){
             if(fs.id == song.id){
                 favouriteList.removeAt(index)
                 favouriteMap.remove(index)
+                favouriteMap2.remove(song.id)
                 favouriteAdapter.notifyItemRemoved(index)
+                favouriteListChanged = true
                 break
             }
         }
-        //update the notification from here
-        if(MusicPlayerService.serviceBound){
-            service?.updateLikeOnNotification()
-        }
+        service?.updateNotificationOnLike(song)
+
     }
 
     override fun updateOnFavouritSongsLoaded(count: Int) {
@@ -797,13 +857,13 @@ class HomeScreenActivity : AppCompatActivity()
     }
     override fun updateOnShuffleStateChange(state: Boolean) {
         MusicPlayerService.shuffleState = state
-        iv_shuffle_state.setImageResource(if(state){ R.drawable.ic_shuffle_click}else {R.drawable.ic_shuffle})
+        Glide.with(applicationContext).load(if(state){ R.drawable.ic_shuffle_click}else {R.drawable.ic_shuffle}).into(iv_shuffle_state)
         Log.d(TAG,"Shuffle state changed")
     }
 
     override fun updateOnLoopStateChange(state: Boolean) {
         MusicPlayerService.loopState = state
-        iv_loop_state.setImageResource(if(!state){ R.drawable.ic_repeat}else {R.drawable.ic_repeat_one})
+        Glide.with(applicationContext).load(if(!state){ R.drawable.ic_repeat}else {R.drawable.ic_repeat_one}).into(iv_loop_state)
         Log.d(TAG,"Loop state changed")
     }
 
@@ -824,9 +884,9 @@ class HomeScreenActivity : AppCompatActivity()
     //don't worry this function can only be called when the recyclerView was initialized. i.e songList was loaded
     fun playMusicInService(songIndex:Int){
         //how do we suppose to carry the songIndex to the boundEvent
-        aCopyOfCurrentSongIndexToCarryWithinThisClass = songIndex
 
-        Log.d(TAG,"playing music babe")
+
+        aCopyOfCurrentSongIndexToCarryWithinThisClass = songIndex
 
         startAndBindServiceIfNotRunning()
 
@@ -910,15 +970,15 @@ class HomeScreenActivity : AppCompatActivity()
         //means we have to playMusicPlayer music for the first time
         service?.initServiceObject(baseContext)
         //which list you want to put to queue
-        putSongListToQueue()
-        service?.playMusicPlayer(aCopyOfCurrentSongIndexToCarryWithinThisClass,false, false)
+        if(putSongListToQueue())
+            service?.playMusicPlayer(aCopyOfCurrentSongIndexToCarryWithinThisClass,false, false)
     }
 
-    fun putSongListToQueue(){
+    fun putSongListToQueue():Boolean{
         //if new song list is the previous one?
         //if not then we add the list to the queue and save the pointer of that list
         if((service?.queuePointer!=listToAddToQueue.listType
-            ||service?.queuePointer2!=listToAddToQueue.index||queueSetChanged)
+            ||service?.queuePointer2!=listToAddToQueue.index||queueSetChanged||favouriteListChanged)
             &&listToAddToQueue.listType!=ListTypes.LIST_TYPE_QUEUE_SONGS){
 
             if(service?.queuePointer!=listToAddToQueue.listType)
@@ -928,12 +988,15 @@ class HomeScreenActivity : AppCompatActivity()
             if(queueSetChanged)
                 Log.d(TAG,"listToAddToQueue.queueSetChanged")
 
-            service?.initSongQueue(getListInQueue())
+            val a = getListInQueue()
+            if(a.size==0)return false
+            service?.initSongQueue(a)
             service?.queuePointer = listToAddToQueue.listType
             service?.queuePointer2 = listToAddToQueue.index
             queueSetChanged = false
+            favouriteListChanged = false
         }
-
+        return true
     }
 
 
@@ -943,14 +1006,12 @@ class HomeScreenActivity : AppCompatActivity()
         return when(listToAddToQueue.listType){
             ListTypes.LIST_TYPE_ALL_SONGS->{
                 if(service?.songList?.size!!>0){
-                    service?.getCurrentSong()?.isPlaying = false
-                    notifyAdapterOnItemChanged(songMap[service?.getCurrentSong()!!.id]!!,listToAddToQueue.index)
+                    notifyAdapterOnItemChanged(service?.getCurrentSong()!!,songMap[service?.getCurrentSong()!!.id]!!,listToAddToQueue.index)
                 }
                 songList
             }
             ListTypes.LIST_TYPE_FAVOURITE_SONGS->{
                 if(service?.songList?.size!!>0){
-                    service?.getCurrentSong()?.isPlaying = false
                     adapter.notifyItemChanged(songMap[service?.getCurrentSong()!!.id]!!)
                     favouriteAdapter.notifyDataSetChanged()
                 }
@@ -1037,6 +1098,8 @@ class HomeScreenActivity : AppCompatActivity()
                         changeBackgroundOnBottomSheetCollapsed()
                     Log.d(TAG,"BottomSheet: state collapsed")
                     ll_player_screen.visibility = View.GONE
+
+                    ll_home_screen_fragment.visibility = View.VISIBLE
                 }
                 BottomSheetBehavior.STATE_EXPANDED->{
                     Log.d(TAG,"BottomSheet: state expanded")
@@ -1070,6 +1133,7 @@ class HomeScreenActivity : AppCompatActivity()
         s = (maxTime/1000)%60
         time = ""+if(m<10){"0"+m}else{m}+":"+if(s<10){"0"+s}else{s}
         tv_duration.text = time
+
     }
 
 
@@ -1134,7 +1198,7 @@ class HomeScreenActivity : AppCompatActivity()
 
         if (fragmentCount>1){
             //these are fragments other than the HomeScreenFragment
-            supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_arrow_back_24dp)
+            supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_back)
             Log.d(TAG,"More than one fragment "+fragmentCount)
         }
     }
@@ -1146,7 +1210,7 @@ class HomeScreenActivity : AppCompatActivity()
             Log.d(TAG,"pop fragment "+fragmentCount)
             if(fragmentCount==1){
                 //this is homeScreenFragment
-                supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_menu_24dp)
+                supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_menu)
                 supportActionBar!!.setTitle(R.string.title_activity_home_screen)
                 Log.d(TAG,"Only one fragment left in the stack")
             }
@@ -1166,14 +1230,14 @@ class HomeScreenActivity : AppCompatActivity()
         setSupportActionBar(toolbar)
 //        nav_view.setNavigationItemSelectedListener(this)
 
-        favouriteAdapter = FavouriteRecyclerViewAdapter(favouriteItemListener, favouriteList,this)
+        favouriteAdapter = FavouriteRecyclerViewAdapter(favouriteItemListener, favouriteList,this,this)
         playlistAdapter = PlaylistRecyclerViewAdapter(playlistItemListener,playlistList,this)
 
         //init song adapter
 
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_menu_24dp)
+        supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_menu)
 
 
         cv_player_bar_play.setOnClickListener(clickListener)
@@ -1194,10 +1258,14 @@ class HomeScreenActivity : AppCompatActivity()
         tv_player_peek_title.isSelected = true
 
 
+
+
         headerView!!.findViewById<CardView>(R.id.cv_sleep_timer).setOnClickListener(clickListener)
         headerView!!.findViewById<ImageView>(R.id.iv_drawer_logo).setOnClickListener(clickListener)
+        headerView!!.findViewById<LinearLayout>(R.id.ll_drawer_poster).background =
+            ResourcesCompat.getDrawable(resources,R.drawable.bg_menu,null)
 
-        val tbDarkMode = headerView!!.findViewById<Switch>(R.id.tb_dark_mode)
+        val tbDarkMode = headerView!!.findViewById<SwitchCompat>(R.id.tb_dark_mode)
         tbDarkMode.isChecked = darkModeEnabled
         tbDarkMode.setOnCheckedChangeListener{ _ , b ->
             if (b) {
@@ -1209,7 +1277,9 @@ class HomeScreenActivity : AppCompatActivity()
             }
         }
 
-        drawer_layout.setScrimColor(Color.TRANSPARENT)
+        val size = Point()
+        windowManager.defaultDisplay.getSize(size)
+        nav_view.layoutParams.width = (size.x.toFloat()*3.6f/5.0f).toInt()
         drawer_layout.addDrawerListener(object: ActionBarDrawerToggle(this, drawer_layout,R.string.open,R.string.close){
             override fun onDrawerSlide(drawerView:View, slideOffset:Float){
                 super.onDrawerSlide(drawerView, slideOffset)
@@ -1233,7 +1303,7 @@ class HomeScreenActivity : AppCompatActivity()
             override fun onSwipeLeft() {
                 if(!queueFragmentOpened) {
                     openPlayingQueueFragment()
-                    iv_queue_or_poster.setImageResource(R.drawable.ic_playlist_white_click)
+                    Glide.with(applicationContext).load(R.drawable.ic_playlist_white_click).into(iv_queue_or_poster)
                 }else {
                     showQueueView()
                 }
@@ -1344,14 +1414,16 @@ class HomeScreenActivity : AppCompatActivity()
                 }
 
             })
-            iv_queue_or_poster.setImageResource(R.drawable.ic_playlist_white_click)
+            Glide.with(applicationContext).load(R.drawable.ic_playlist_white_click).into(iv_queue_or_poster)
+            Log.d(TAG,"SHOw queue view")
         }
     }
     private fun showPosterView(){
         if(rl_player_screen_poster.x == -rl_player_screen_poster.width.toFloat()){
             rl_player_screen_poster.animate().x(0.0f)
             rl_queue_display.animate().x(rl_queue_display.width.toFloat())
-            iv_queue_or_poster.setImageResource(R.drawable.ic_playlist_white)
+            Glide.with(applicationContext).load(R.drawable.ic_playlist_white).into(iv_queue_or_poster)
+            Log.d(TAG,"SHOw poster view")
         }
     }
 
@@ -1364,6 +1436,9 @@ class HomeScreenActivity : AppCompatActivity()
 
     private fun changeToDarkIcons(){
         nav_view.setBackgroundColor(ResourcesCompat.getColor(resources,R.color.colorBackgroundDark,null))
+
+//        headerView!!.findViewById<RelativeLayout>(R.id.iv_footer).background =
+//            ResourcesCompat.getDrawable(resources,R.drawable.bg_menu_dark,null)
         headerView?.findViewById<TextView>(R.id.tv_dark_mode)!!.setTextColor(ResourcesCompat.getColor(resources,R.color.colorBackgroundLight,null))
         headerView?.findViewById<TextView>(R.id.tv_sleep_timer)!!.setTextColor(ResourcesCompat.getColor(resources,R.color.colorBackgroundLight,null))
 

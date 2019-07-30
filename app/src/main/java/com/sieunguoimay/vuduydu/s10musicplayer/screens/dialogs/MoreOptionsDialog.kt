@@ -3,6 +3,7 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import android.os.Build
 import android.support.v7.widget.CardView
 import android.text.Layout
 import android.util.Log
@@ -10,42 +11,21 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.Window
+import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.sieunguoimay.vuduydu.s10musicplayer.R
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import kotlinx.android.synthetic.main.player_bar_home_screen.*
 
 private const val TAG = "MORE_OPTIONS_DIALOG"
 object MoreOptionsDialog {
-
-    fun showDialog(context: Context,view: View){
-        val builder = AlertDialog.Builder(context)
-        val dialog = builder.create()
-//        dialog.setButton(1,"Add to next", clicklistener )
-//        dialog.setButton(2,"Push to queue", clicklistener )
-//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        dialog.setTitle("Hello Dialog")
-        val wmlp = dialog.window!!.attributes
-        wmlp.gravity = Gravity.TOP;Gravity.START
-        wmlp.x = view.x.toInt()
-        wmlp.y = view.y.toInt()
-        dialog.show()
-    }
-    val clicklistener = object:DialogInterface.OnClickListener{
-        override fun onClick(dialog: DialogInterface?, which: Int) {
-            when(which){
-                1->{
-                    Log.d(TAG,"Button 1 on dialog clicked")
-                }
-            }
-        }
-    }
-
-
     fun showPopupWindowQueueItem(context:Context, view:View, index:Int,callback:MoreOptionActionCallback, isBottom:Boolean){
+
         val inflater  = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val v = inflater.inflate(R.layout.more_option_popup_window,null, false)
         val pw = PopupWindow(v,Utils.DPToPX(100,context), Utils.DPToPX(40,context),true)
@@ -57,6 +37,7 @@ object MoreOptionsDialog {
 
         val delete = v.findViewById<CardView>(R.id.cv_more_option_add_to_next)
         (v.findViewById<TextView>(R.id.tv_more_option_add_to_next)).text = "Delete"
+        Glide.with(context).load(R.drawable.ic_delete).into(v.findViewById<ImageView>(R.id.iv_more_option_add_to_next))
 
         delete.setOnClickListener{
             callback.onDelete(index)
@@ -64,9 +45,15 @@ object MoreOptionsDialog {
         }
     }
     fun showPopupWindow1(context:Context, view:View, song:Song,songIndex:Int,playlistIndex:Int, callback:MoreOptionActionCallback, isBottom:Boolean,listType: String){
+
         val inflater  = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val v = inflater.inflate(R.layout.more_option_popup_window,null, false)
-        val pw = PopupWindow(v,Utils.DPToPX(140,context), Utils.DPToPX(120+if(listType == ListTypes.LIST_TYPE_PLAYLIST_SONGS){40}else{0},context),true)
+
+        val pw = PopupWindow(v,Utils.DPToPX(140,context), Utils.DPToPX(
+            120
+                    +if(listType == ListTypes.LIST_TYPE_PLAYLIST_SONGS){40}else{0}
+                    +if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){40}else{0}
+            ,context),true)
 //        pw.showAtLocation(view,Gravity.BOTTOM or Gravity.END,view.x.toInt(),view.y.toInt())
 
         if(isBottom)
@@ -75,6 +62,7 @@ object MoreOptionsDialog {
             pw.showAsDropDown(view,-Utils.DPToPX(25,context),0,Gravity.TOP or Gravity.END)
 
         v.findViewById<TextView>(R.id.tv_more_option_like).text = if(song.liked){ "Unlike" }else{"Like"}
+        Glide.with(context).load(if(song.liked){ R.drawable.ic_like_click}else{R.drawable.ic_like}).into(v.findViewById(R.id.iv_more_option_like))
 
 
         val buttonClickListener = object:View.OnClickListener{
@@ -95,6 +83,9 @@ object MoreOptionsDialog {
                     R.id.cv_more_option_delete->{
                         callback.onDeleteSongInPlaylist(songIndex,playlistIndex)
                     }
+                    R.id.cv_more_option_cancel->{
+
+                    }
                 }
                 pw.dismiss()
             }
@@ -105,10 +96,18 @@ object MoreOptionsDialog {
         v.findViewById<CardView>(R.id.cv_more_option_share).setOnClickListener(buttonClickListener)
         v.findViewById<CardView>(R.id.cv_more_option_like).setOnClickListener(buttonClickListener)
 
+
+
         val delete = v.findViewById<CardView>(R.id.cv_more_option_delete)
         if(listType == ListTypes.LIST_TYPE_PLAYLIST_SONGS) {
             delete.visibility = View.VISIBLE
             delete.setOnClickListener (buttonClickListener)
+        }
+
+        val cancel = v.findViewById<CardView>(R.id.cv_more_option_cancel)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            cancel.visibility = View.VISIBLE
+            cancel.setOnClickListener(buttonClickListener)
         }
     }
 
@@ -117,7 +116,10 @@ object MoreOptionsDialog {
         val inflater  = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val v = inflater.inflate(R.layout.more_option_popup_window_2,null, false)
         val height = if(type == ListTypes.LIST_TYPE_PLAYLIST_SONGS){200}else{120}
-        val pw = PopupWindow(v,Utils.DPToPX(140,context), Utils.DPToPX(height,context),true)
+
+        val pw = PopupWindow(v,Utils.DPToPX(140,context), Utils.DPToPX(height
+                + if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){40}else{0}
+            ,context),true)
 //        pw.showAtLocation(view,Gravity.BOTTOM or Gravity.END,view.x.toInt(),view.y.toInt())
 
         if (isBottom)
@@ -157,6 +159,14 @@ object MoreOptionsDialog {
             }
         }else{
             delete.visibility = View.GONE
+            rename.visibility = View.GONE
+        }
+
+        val cancel = v.findViewById<CardView>(R.id.cv_more_option_2_cancel)
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            cancel.visibility = View.VISIBLE
+            cancel.setOnClickListener{ pw.dismiss() }
+
         }
     }
     interface MoreOptionActionCallback{

@@ -50,13 +50,22 @@
                 app:cardBackgroundColor="@color/colorAbsoluteTransparency"
         >
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                     android:id="@+id/iv_song_select_icon"
                     android:layout_width="@dimen/home_screen_item_height"
                     android:layout_height="@dimen/home_screen_item_height"
                     android:src="@drawable/ic_songs"
                     android:clickable="false"
             />
+
+            <!--<de.hdodenhof.circleimageview.CircleImageView-->
+                    <!--android:id="@+id/iv_song_select_icon"-->
+                    <!--android:layout_width="@dimen/home_screen_item_height"-->
+                    <!--android:layout_height="@dimen/home_screen_item_height"-->
+                    <!--android:src="@drawable/ic_songs"-->
+                    <!--android:clickable="false"-->
+            <!--/>-->
+
         </android.support.v7.widget.CardView>
         <LinearLayout
                 android:layout_width="wrap_content"

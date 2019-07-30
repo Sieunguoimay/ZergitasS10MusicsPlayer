@@ -25,9 +25,7 @@ import java.lang.IllegalArgumentException
 import android.media.AudioFocusRequest
 import android.media.AudioAttributes
 import android.support.v4.content.ContextCompat.getSystemService
-
-
-
+import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.DatabasePresenter
 
 
 private val TAG = "MUSIC_PLAYER_SERVICE"
@@ -47,6 +45,15 @@ class MusicPlayerService: Service()
         var openActivityFromNotification:Boolean = false
         var shuffleState:Boolean = false
         var loopState:Boolean = false
+
+        var musicPlayerGlobalState:Boolean = false
+
+        fun stopStartService(context:Context){
+            val intent = Intent(context, MusicPlayerService::class.java)
+            intent.action = ServicesActions.STOP_START_SERVICE
+            intent.flags = Intent.FLAG_INCLUDE_STOPPED_PACKAGES
+            context?.startService(intent)
+        }
     }
     inner class MusicPlayerBinder: Binder(){
         fun getServiceInstance():MusicPlayerService = this@MusicPlayerService
@@ -57,7 +64,7 @@ class MusicPlayerService: Service()
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //return super.onStartCommand(intent, flags, startId)
-        Log.d(TAG,"Do something with this command")
+        Log.d(TAG,"Do something with this command "+intent?.action+" flag "+flags+" startId "+startId)
         serviceStarted = true
         when(intent?.action){
             ServicesActions.STOP_START_SERVICE->{
@@ -87,7 +94,7 @@ class MusicPlayerService: Service()
             }
 
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
     //we allow humans to bind to this service
     override fun onBind(intent: Intent?): IBinder? {
@@ -106,6 +113,7 @@ class MusicPlayerService: Service()
         progressBarThread?.running = false
         progressBarThread?.join()
         waveformVisualizer.stopVisualizer()
+        musicPlayerGlobalState = false
         super.onDestroy()
     }
 
@@ -129,7 +137,7 @@ class MusicPlayerService: Service()
     var initSongQueueFlag:Boolean = false
 
     var mAudioManager:AudioManager? = null
-
+    var databasePresenter:DatabasePresenter? = null
     //after this point we use an instance of this class to access from the main activity
     //it is the same as one single separate object created from this class
     //since we cannot pass the parameters into the constructor
@@ -175,10 +183,10 @@ class MusicPlayerService: Service()
         if(songList.size>0) {
             val maxTime = songList[currentSongIndex].duration
             val currentTime = musicPlayer!!.currentPosition
+
             progress = (currentTime.toFloat()) / (maxTime.toFloat())
 
             callback?.updateProgressBar(progress,maxTime.toInt())
-
         }
         return progress
     }
@@ -205,7 +213,7 @@ class MusicPlayerService: Service()
         }
 
 
-        if(songList.size>0){
+        if(songList.size>0&&index<songList.size){
 
             var condition = initSongQueueFlag||currentSongIndex!=index||extraCondition
             if(initSongQueueFlag)
@@ -239,6 +247,7 @@ class MusicPlayerService: Service()
                     }
                 }
 
+
                 callback?.updateViewOnNewSong(true,songList[index],index,currentSongIndex,shuffleNext)
                 if(currentSongIndex<songList.size){
                     songList[currentSongIndex].isPlaying = false
@@ -265,14 +274,15 @@ class MusicPlayerService: Service()
                     startForeground()
                     Log.d(TAG,"Resume playing and start foreground again")
                 }//else ignore it
-                callback?.updateViewOnStateChange(true)
+                    callback?.updateViewOnStateChange(true,songList[index])
             }
 
             musicPlayerNotification?.updateNotificationView(getCurrentSong(), true,false)
-
-
         }
+        musicPlayerGlobalState = true
     }
+    //chu cua search box -> trang
+    //margin top trong search screen
 
     override fun onPrepared(mp: MediaPlayer?) {
         try {
@@ -310,8 +320,9 @@ class MusicPlayerService: Service()
         stopForeground()
         //and pauseMusicPlayer the music
         musicPlayer?.pause()
-        callback?.updateViewOnStateChange(false)
+        callback?.updateViewOnStateChange(false,songList[currentSongIndex])
         musicPlayerNotification?.updateNotificationView(songList[currentSongIndex],false,false)
+        musicPlayerGlobalState = false
 
     }
     //simply call the next song by giving the right index
@@ -342,25 +353,26 @@ class MusicPlayerService: Service()
 
     fun likeSong(){
         Log.d(TAG,"Love a song from notification")
-        songList[currentSongIndex].liked = !songList[currentSongIndex].liked
-        callback?.updateOnLikeFromNotification(songList[currentSongIndex])
+        databasePresenter?.likeOrUnlike(songList[currentSongIndex])
+        if(callback == null)
+            Log.d(TAG,"Callback is nulllllllll")
+        if(!serviceBound)
+            updateNotificationOnLike(songList[currentSongIndex])
     }
-
-    fun updateLikeOnNotification(){
-        Log.d(TAG,"Love a song from player screen up to notification")
-        musicPlayerNotification?.updateNotificationView(songList[currentSongIndex],musicPlayer?.isPlaying!!,false)
+    fun updateNotificationOnLike(song:Song){
+        if(song==songList[currentSongIndex])
+            musicPlayerNotification?.updateNotificationView(songList[currentSongIndex],musicPlayer?.isPlaying!!,false)
     }
-
     fun getCurrentSong():Song{
         return songList[currentSongIndex]
     }
 
     interface UpdateViewCallback{
         fun updateViewOnNewSong(state:Boolean,song:Song,newSongIndex:Int, oldSongIndex:Int, shuffleNext:Boolean){
-            updateViewOnStateChange(state)
+            updateViewOnStateChange(state,song)
         }
-        fun updateViewOnStateChange(state:Boolean)
-        fun updateOnLikeFromNotification(song:Song)
+        fun updateViewOnStateChange(state:Boolean,song:Song)
+//        fun updateOnLikeFromNotification(song:Song)
 
         //range 0.0f-1.0f
         fun updateProgressBar(progress:Float, maxTime:Int)
@@ -387,6 +399,7 @@ class MusicPlayerService: Service()
         }
     }
     private fun getRandom():Int{
+        if(songList.size<=1)return 0
         var randomIndex:Int
         do{
             randomIndex = (Math.random()*(songList.size).toFloat()).toInt()
@@ -413,7 +426,7 @@ class MusicPlayerService: Service()
 
     private var mAudioFocusPlaybackDelayed:Boolean = false
     private var mPlayOnAudioFocus:Boolean = false
-
+    private var mLossFocusLastTime:Boolean = false
     private fun play(){
         playMusicPlayer(currentSongIndex,true,false)
     }
@@ -455,9 +468,7 @@ class MusicPlayerService: Service()
                 .setOnAudioFocusChangeListener(audioFocusListener)
                 .build()
             audioFocus = mAudioManager?.requestAudioFocus(focusRequest)
-            Log.d(TAG,">=Build.VERSION_CODES.O ")
         } else {
-            Log.d(TAG,"<Build.VERSION_CODES.O ")
             audioFocus = mAudioManager?.requestAudioFocus(
                 audioFocusListener, AudioManager.STREAM_VOICE_CALL,
                 AudioManager.AUDIOFOCUS_GAIN_TRANSIENT
@@ -480,21 +491,25 @@ class MusicPlayerService: Service()
         override fun onAudioFocusChange(focusChange: Int) {
             when (focusChange) {
                 AudioManager.AUDIOFOCUS_GAIN -> {
-                    if (!mPlayOnAudioFocus)
+                    if (!mPlayOnAudioFocus&&mLossFocusLastTime) {
                         play()
+                        mLossFocusLastTime = false
+                    }
                     mPlayOnAudioFocus = true
                     Log.d(TAG,"FOCUS GAIN")
                 }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> { }
                 AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> if (isPlaying()) {
                     mPlayOnAudioFocus = false
+                    mLossFocusLastTime = true
                     pause()
-                    Log.d(TAG,"FOCUS LOSSSSSSSS")
+                    Log.d(TAG,"FOCUS LOSSSSSSSS: AUDIOFOCUS_LOSS_TRANSIENT")
                 }
-                AudioManager.AUDIOFOCUS_LOSS -> {
+                AudioManager.AUDIOFOCUS_LOSS -> if (isPlaying()){
                     mPlayOnAudioFocus = false
-                    Log.d(TAG,"FOCUS LOSSSSSSSS")
-                    stop()
+                    mLossFocusLastTime = true
+                    Log.d(TAG,"FOCUS LOSSSSSSSS: AUDIOFOCUS_LOSS")
+                    pause()
                 }
             }
         }

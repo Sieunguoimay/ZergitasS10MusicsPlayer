@@ -9,7 +9,7 @@
     </string-array>
     <string name="open">open</string>
     <string name="close">close</string>
-    <string name="title_activity_home_screen">S10 Music Player</string>
+    <string name="title_activity_home_screen">S10 MUSIC PLAYER</string>
     <string name="title_search_fragment">Search A Song</string>
     <string name="action_bar_title_playing_queue">Playing Queue</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

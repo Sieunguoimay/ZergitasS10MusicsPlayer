@@ -17,7 +17,7 @@
     <color name="gradientLeft">#110e2d</color>
     <color name="gradientRight">#541747</color>
 
-
+    <color name="notificationBackgroundColor">#0F091D</color>
 
     <color name="colorPrimary_end">#81374B</color>
     <color name="colorPrimary_end2">#37817F</color>

@@ -22,6 +22,7 @@ open class Song(
     var liked:Boolean = false
     var selected:Boolean = false
     var isPlaying:Boolean = false
+
   constructor(parcel: Parcel)
           :this(
           parcel.readLong(),
@@ -38,7 +39,7 @@ open class Song(
 
 
   override fun describeContents(): Int {
-    return 0;
+    return 0
   }
 
   override fun writeToParcel(dest: Parcel?, flags: Int) {
@@ -55,17 +56,18 @@ open class Song(
 
 
 
-  companion object CREATOR:Parcelable.Creator<Song>{
-    override fun createFromParcel(source: Parcel?): Song {
-      return Song(source!!)
-    }
+  companion object CREATOR:Parcelable.Creator<Song>
+      {
+          override fun createFromParcel(source: Parcel?): Song {
+              return Song(source!!)
+          }
 
-    override fun newArray(size: Int): Array<Song?> {
-      return arrayOfNulls(size)
-    }
+          override fun newArray(size: Int): Array<Song?> {
+              return arrayOfNulls(size)
+          }
 
 
-  }
+      }
 
   fun copyObject():Song{
     return Song(this.id,this.albumId, this.title, this.artist, this.path, this.thumb, this.duration, this.date, this.size)

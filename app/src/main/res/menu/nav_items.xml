@@ -6,7 +6,7 @@
     <group android:checkableBehavior="single">
         <!--
                 Add menu items here
-                Menu items with icon and Title
+                Menu items with ic_noti_status_bar and Title
         -->
         <item
                 android:id="@+id/nav_it_first"

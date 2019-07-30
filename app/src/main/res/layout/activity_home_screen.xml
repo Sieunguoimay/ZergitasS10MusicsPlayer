@@ -47,11 +47,11 @@
                 android:fontFamily="@font/blacklisted"
         />
         <TextView
+                android:id="@+id/tv_company_name"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/company_name"
                 android:textSize="@dimen/text_size_3"
-                android:id="@+id/tv_company_name"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/tv_app_name"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -59,16 +59,18 @@
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/designer_name"
                 android:textSize="@dimen/text_size_3"
                 android:id="@+id/tv_designer_name"
                 android:layout_centerHorizontal="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="@dimen/_10sdp"
         />
+
     </RelativeLayout>
 
+    <!--android:text="@string/designer_name"-->
 
+    <!--android:text="@string/company_name"-->
 
 
     <android.support.design.widget.NavigationView

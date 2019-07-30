@@ -19,9 +19,9 @@
         android:layout_margin="@dimen/_10sdp"
 >
 
-    <LinearLayout
+    <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/card_height"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
     >
         <!--<android.support.v7.widget.CardView-->
@@ -38,19 +38,18 @@
             <!--/>-->
         <!--</android.support.v7.widget.CardView>-->
 
-
         <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/iv_playlist_poster"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:src="@drawable/piano"
+                android:layout_height="@dimen/_160sdp"
+                android:src="@drawable/ic_songs"
         />
+
         <!--app:civ_border_width="2dp"-->
         <!--app:civ_border_color="#FF000000"-->
 
         <android.support.v7.widget.CardView
-
+                android:layout_below="@+id/iv_playlist_poster"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -69,11 +68,11 @@
 
             <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
             >
                 <LinearLayout
                         android:layout_width="0dp"
@@ -123,13 +122,14 @@
                             android:layout_margin="@dimen/_5sdp"
                             android:clickable="false"
                             android:layout_gravity="center"
+                            android:id="@+id/iv_playlist_options"
                     />
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.v7.widget.CardView>
 

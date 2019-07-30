@@ -4,7 +4,7 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:gravity="center_vertical"
-              android:background="@color/colorPrimary"
+              android:background="@color/notificationBackgroundColor"
 >
 
 
@@ -16,11 +16,11 @@
             android:id="@+id/ll_noti_title"
     >
         <ImageView
-                android:layout_width="@dimen/standard_item_height"
-                android:layout_height="@dimen/standard_item_height"
-                android:src="@drawable/ic_library_music_24dp"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_50sdp"
+                android:src="@drawable/ic_songs"
                 android:id="@+id/iv_noti_thumb"
-                android:layout_margin="@dimen/_5sdp"
+                android:layout_margin="@dimen/_10sdp"
 
         />
         <TextView
@@ -88,9 +88,9 @@
 
         >
             <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:src="@drawable/ic_previous"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_previous_music_player"
                     android:layout_gravity="center"
                     android:clickable="false"
             />
@@ -112,7 +112,7 @@
             <ImageView
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
-                    android:src="@drawable/ic_play"
+                    android:src="@drawable/ic_play_music_player"
                     android:layout_gravity="center"
                     android:id="@+id/iv_noti_state"
                     android:clickable="false"
@@ -132,9 +132,9 @@
                 android:layout_weight="1"
         >
             <ImageView
-                    android:layout_width="@dimen/_25sdp"
-                    android:layout_height="@dimen/_25sdp"
-                    android:src="@drawable/ic_next"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:src="@drawable/ic_next_music_player"
                     android:layout_gravity="center"
                     android:clickable="false"
             />
@@ -153,9 +153,9 @@
                 android:layout_weight="1"
         >
             <ImageView
-                    android:layout_width="@dimen/_22sdp"
-                    android:layout_height="@dimen/_22sdp"
-                    android:src="@drawable/ic_favorite_border_24dp"
+                    android:layout_width="@dimen/_25sdp"
+                    android:layout_height="@dimen/_25sdp"
+                    android:src="@drawable/ic_like_white"
                     android:layout_gravity="center"
                     android:clickable="false"
                     android:id="@+id/iv_noti_love"
