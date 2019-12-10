@@ -8,21 +8,22 @@ import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongSelectRecycl
 
 
 open class Song(
-        var id: Long,
-        var albumId: Long,
-        var title: String,
-        var artist:String,
-        var path:String,
+        var id: Long =0,
+        var albumId: Long=0,
+        var title: String = "",
+        var artist:String?="",
+        var path:String = "",
         var thumb: Bitmap? = null,
-        var duration: Long,
-        var date: Long,
-        var size:Long
+        var duration: Long = 0,
+        var date: Long = 0,
+        var size:Long = 0
 ) : Parcelable {
 
     var liked:Boolean = false
     var selected:Boolean = false
     var isPlaying:Boolean = false
 
+    var firebaseStorageKey:String = ""
   constructor(parcel: Parcel)
           :this(
           parcel.readLong(),
@@ -35,7 +36,6 @@ open class Song(
           parcel.readLong(),
           parcel.readLong())
   {}
-
 
 
   override fun describeContents(): Int {

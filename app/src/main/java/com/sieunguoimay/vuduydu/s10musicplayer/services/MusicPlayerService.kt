@@ -12,11 +12,8 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
-import com.sieunguoimay.vuduydu.s10musicplayer.helpers.AudioFocusAwarePlayer
-import com.sieunguoimay.vuduydu.s10musicplayer.helpers.AudioFocusHelper
-import com.sieunguoimay.vuduydu.s10musicplayer.helpers.AudioFocusRequestCompat
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.notifications.MusicPlayerNotification
+import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification
 import com.sieunguoimay.vuduydu.s10musicplayer.tasks.ProgressBarThread
 import com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.WaveformVisualizer
 import java.io.File
@@ -24,11 +21,11 @@ import java.io.IOException
 import java.lang.IllegalArgumentException
 import android.media.AudioFocusRequest
 import android.media.AudioAttributes
-import android.support.v4.content.ContextCompat.getSystemService
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.DatabasePresenter
 
 
 private val TAG = "MUSIC_PLAYER_SERVICE"
+@Suppress("DEPRECATION")
 class MusicPlayerService: Service()
     , MediaPlayer.OnPreparedListener
     , MediaPlayer.OnCompletionListener
@@ -124,6 +121,7 @@ class MusicPlayerService: Service()
     var musicPlayerNotification:MusicPlayerNotification? = null
     var musicPlayer: MediaPlayer? = null
     var songList = ArrayList<Song>()
+    var isOnline:Boolean = false
     var currentSongIndex:Int = 0
     private var readyForChangeSong:Boolean = true
     var callback:UpdateViewCallback?= null
@@ -180,7 +178,7 @@ class MusicPlayerService: Service()
     //this method is called from Thread
     override fun updateProgress():Float{
         var progress = 0.0f
-        if(songList.size>0) {
+        if(songList.size>0&&currentSongIndex<songList.size) {
             val maxTime = songList[currentSongIndex].duration
             val currentTime = musicPlayer!!.currentPosition
 
@@ -256,10 +254,23 @@ class MusicPlayerService: Service()
                 currentSongIndex = index
                 songList[currentSongIndex].isPlaying = true
 
-                val uri: Uri = Uri.fromFile(File(getCurrentSong().path))
                 musicPlayer = MediaPlayer()
-                musicPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
-                musicPlayer!!.setDataSource(context.applicationContext, uri)
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    musicPlayer!!.setAudioAttributes(
+                        AudioAttributes
+                            .Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                }else
+                    musicPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
+                if(isOnline)
+                    musicPlayer!!.setDataSource(getCurrentSong().path)
+                else {
+                    val uri: Uri = Uri.fromFile(File(getCurrentSong().path))
+                    musicPlayer!!.setDataSource(context.applicationContext, uri)
+                }
                 musicPlayer!!.setOnPreparedListener(this@MusicPlayerService)
                 musicPlayer!!.setOnCompletionListener(this@MusicPlayerService)
                 musicPlayer!!.prepareAsync()

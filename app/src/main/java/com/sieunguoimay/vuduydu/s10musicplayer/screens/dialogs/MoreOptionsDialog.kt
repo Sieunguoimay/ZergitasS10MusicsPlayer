@@ -169,6 +169,43 @@ object MoreOptionsDialog {
 
         }
     }
+
+    fun showPopupWindow3(context:Context, view:View, isBottom:Boolean ,callback:MoreOptionActionCallback3,song:Song){
+        val inflater  = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val v = inflater.inflate(R.layout.more_option_popup_window_2,null, false)
+        val height = 40//if(type == ListTypes.LIST_TYPE_PLAYLIST_SONGS){200}else{120}
+
+        val pw = PopupWindow(v,Utils.DPToPX(140,context), Utils.DPToPX(height
+                + if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){40}else{0}
+            ,context),true)
+//        pw.showAtLocation(view,Gravity.BOTTOM or Gravity.END,view.x.toInt(),view.y.toInt())
+
+        if (isBottom)
+            pw.showAsDropDown(view, -Utils.DPToPX(20,context), 0, Gravity.BOTTOM or Gravity.END)
+        else
+            pw.showAsDropDown(view, -Utils.DPToPX(20,context), 0, Gravity.TOP or Gravity.END)
+
+        val addToNext = v.findViewById<CardView>(R.id.cv_more_option_2_add_to_next)
+        val pushToQueue = v.findViewById<CardView>(R.id.cv_more_option_2_push_to_queue)
+        val playAll = v.findViewById<CardView>(R.id.cv_more_option_2_play_all)
+        val delete = v.findViewById<CardView>(R.id.cv_more_option_2_delete)
+        val rename = v.findViewById<CardView>(R.id.cv_more_option_2_rename)
+        val cancel = v.findViewById<CardView>(R.id.cv_more_option_2_cancel)
+        addToNext.visibility = View.GONE
+        pushToQueue.visibility = View.GONE
+        playAll.visibility = View.GONE
+        rename.visibility = View.GONE
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.M){
+            cancel.visibility = View.VISIBLE
+            cancel.setOnClickListener{ pw.dismiss() }
+
+        }
+        delete.setOnClickListener {
+            callback.onDeleteOnlineSong(song)
+            pw.dismiss()
+        }
+    }
+
     interface MoreOptionActionCallback{
         fun onAddToNext(song:Song)
         fun onPushToQueue(song:Song)
@@ -183,5 +220,8 @@ object MoreOptionsDialog {
         fun onRename2(index:Int, listType:String)
         fun onDelete2(index:Int, listType:String,isOpenFromFragment:Boolean)
         fun onPlayAll(index:Int, listType:String)
+    }
+    interface MoreOptionActionCallback3{
+        fun onDeleteOnlineSong(song:Song)
     }
 }

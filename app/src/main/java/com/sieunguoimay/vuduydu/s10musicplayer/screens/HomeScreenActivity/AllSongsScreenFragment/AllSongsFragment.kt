@@ -29,6 +29,7 @@ class AllSongsFragment : Fragment()
         val view_pager= v.findViewById<ViewPager>(R.id.view_pager_all_songs)
 
         tab_layout.addTab(tab_layout.newTab().setText("Songs"))
+        tab_layout.addTab(tab_layout.newTab().setText("Firebase"))
         tab_layout.addTab(tab_layout.newTab().setText("Favorite"))
         tab_layout.addTab(tab_layout.newTab().setText("Albums"))
         tab_layout.addTab(tab_layout.newTab().setText("Playlist"))

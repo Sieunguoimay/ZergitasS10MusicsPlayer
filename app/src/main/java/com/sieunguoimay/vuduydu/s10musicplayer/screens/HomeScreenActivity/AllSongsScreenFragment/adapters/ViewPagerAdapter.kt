@@ -15,10 +15,11 @@ class ViewPagerAdapter(
         Log.d(TAG,"item id "+p0)
         return when(p0){
             0-> SongsFragment()
-            1-> FavouriteFragment()
-            2-> AlbumsFragment()
-            3-> PlaylistFragment()
-            4-> ArtistsFragment()
+            1-> FirebaseFragment()
+            2-> FavouriteFragment()
+            3-> AlbumsFragment()
+            4-> PlaylistFragment()
+            5-> ArtistsFragment()
             //more go here
             else -> Fragment()
         }

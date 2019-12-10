@@ -24,7 +24,7 @@ import pl.droidsonroids.gif.GifImageView
 
 private const val TAG = "SONG_RV_ADAPTER"
 class SongRecyclerViewAdapter(
-        var listener:StandardSongViewHolder.ItemClickListener<Pair<Int, Song>>,
+        var listener:StandardSongViewHolder.ItemClickListener<Pair<Int, Song>>?,
         var songList:ArrayList<Song>,
         var moreOptionListener: StandardSongViewHolder.ItemMoreOptionClickListener,
         var context:Context
@@ -91,7 +91,8 @@ class SongRecyclerViewAdapter(
 
 
         p0.itemView.setOnClickListener {
-            listener.onItemClick(Pair(p1,song))
+            if(listener!=null)
+                listener!!.onItemClick(Pair(p1,song))
         }
 //        if(song.isPlaying){
 //            p0.itemView.setBackgroundColor(ContextCompat.getColor(context,R.color.colorTransparentLight))

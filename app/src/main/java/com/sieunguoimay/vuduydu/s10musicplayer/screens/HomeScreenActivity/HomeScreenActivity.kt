@@ -2,16 +2,12 @@ package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.annotation.TargetApi
-import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.graphics.BitmapFactory
-import android.graphics.Color
 import android.graphics.Point
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +30,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SwitchCompat
 import android.widget.*
 import com.bumptech.glide.Glide
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
 import kotlinx.android.synthetic.main.player_bar_home_screen.*
 import com.sieunguoimay.vuduydu.s10musicplayer.models.DatabaseModel
@@ -42,8 +43,8 @@ import com.sieunguoimay.vuduydu.s10musicplayer.models.MusicLoadingModel
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.notifications.MusicPlayerNotification
-import com.sieunguoimay.vuduydu.s10musicplayer.notifications.MusicPlayerNotification.Companion.foregroundRunning
+import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification
+import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification.Companion.foregroundRunning
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.AllSongsFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.PlaylistFragment
 import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils.FlashScreenAnimation
@@ -55,7 +56,6 @@ import com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs.TimePickerDialogF
 import com.sieunguoimay.vuduydu.s10musicplayer.utils.*
 import com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.AnimationEffects
 import jp.wasabeef.blurry.Blurry
-import kotlinx.android.synthetic.main.fragment_all_songs.*
 
 class HomeScreenActivity : AppCompatActivity()
 //    , NavigationView.OnNavigationItemSelectedListener
@@ -108,6 +108,10 @@ class HomeScreenActivity : AppCompatActivity()
     var songList = ArrayList<Song>()//the one and only songlist
     private var songMap = LinkedHashMap<Long,Int>()//the one and only songlist
 
+
+    lateinit var onlineSongAdapter: SongRecyclerViewAdapter
+    var onlineSongList = ArrayList<Song>()//the one and only songlist
+    var onlineSongInQueue:Boolean = false
 
     private val albumList = ArrayList<Category>()
     lateinit var albumAdapter:AlbumRecyclerViewAdapter
@@ -195,6 +199,7 @@ class HomeScreenActivity : AppCompatActivity()
             MusicPlayerService.stopStartService(this)
         }
         super.onDestroy()
+        mDatabaseRef.removeEventListener(mDBListener)
     }
 
 
@@ -204,6 +209,10 @@ class HomeScreenActivity : AppCompatActivity()
 
 
 
+    lateinit var mStorage:FirebaseStorage
+    lateinit var mStorageRef: StorageReference
+    lateinit var mDatabaseRef: DatabaseReference
+    lateinit var mDBListener: ValueEventListener
 
 
 
@@ -243,6 +252,40 @@ class HomeScreenActivity : AppCompatActivity()
         adapter = SongRecyclerViewAdapter(this, songList,this, this)
         albumAdapter = AlbumRecyclerViewAdapter(albumItemListener,albumList,ListTypes.LIST_TYPE_ALBUM_SONGS,this)
         artistAdapter = AlbumRecyclerViewAdapter(albumItemListener,artistList,ListTypes.LIST_TYPE_ARTIST_SONGS,this)
+
+
+        mStorageRef = FirebaseStorage.getInstance().getReference("uploads")
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference("uploads")
+        mStorage = FirebaseStorage.getInstance()
+
+        onlineSongAdapter = SongRecyclerViewAdapter(object:StandardSongViewHolder.ItemClickListener<Pair<Int, Song>>{
+                override fun onItemClick(item:Pair<Int, Song>){
+//                    Toast.makeText(applicationContext,"Play the online song list",Toast.LENGTH_SHORT).show()
+                    playAllOnlineSong(item.first)
+                }
+            },onlineSongList,
+            object:StandardSongViewHolder.ItemMoreOptionClickListener {
+                override fun onItemMoreOptionClick(song: Song,view: View,songIndex: Int,playlistIndex: Int,listType: String)
+                {
+//                    Toast.makeText(applicationContext,"More option not specified",Toast.LENGTH_SHORT).show()
+                    MoreOptionsDialog.showPopupWindow3(applicationContext,view,false,object:MoreOptionsDialog.MoreOptionActionCallback3{
+                        override fun onDeleteOnlineSong(song: Song) {
+                            val key = song.firebaseStorageKey
+                            val ref= mStorage.getReferenceFromUrl(song.path)
+                            Log.d(TAG,"delete song "+song.path)
+//                            Toast.makeText(applicationContext,"Song deleted "+song.path,Toast.LENGTH_SHORT).show()
+                            ref.delete().addOnSuccessListener {
+                                mDatabaseRef.child(key).removeValue()
+                                Toast.makeText(applicationContext,"Song deleted",Toast.LENGTH_SHORT).show()
+                            }.addOnFailureListener {
+                                Toast.makeText(applicationContext,"Failed to delete song",Toast.LENGTH_SHORT).show()
+
+                            }
+                        }
+                    },song)
+                }
+            },this)
+
 
         addHomeScreenFragment()
     }
@@ -290,6 +333,7 @@ class HomeScreenActivity : AppCompatActivity()
                 }
             }else{
                 if(v?.id==cv_player_bar_play.id||v?.id==bt_state.id) {
+                    if(songList.size>0)
                     playAllSong(0)
                 }
             }
@@ -510,6 +554,14 @@ class HomeScreenActivity : AppCompatActivity()
         playAllSong(item.first)
         //bottomSheet.state = BottomSheetBehavior.STATE_EXPANDED
     }
+    fun playAllOnlineSong(fromIndex:Int){
+        listToAddToQueue.listType = ListTypes.LIST_TYPE_ONLINE_SONGS
+        playMusicInService(fromIndex)
+
+        if(serviceSongQueueCallback!=null)
+            serviceSongQueueCallback?.notifyQueueChanged()
+    }
+
     fun playAllSong(fromIndex:Int){
         listToAddToQueue.listType = ListTypes.LIST_TYPE_ALL_SONGS
         playMusicInService(fromIndex)
@@ -750,19 +802,22 @@ class HomeScreenActivity : AppCompatActivity()
         queueAdapter?.currentSongIndex = newSongIndex
 
 
-        val currentSongIndex = songMap[song.id]!!
+        if(!onlineSongInQueue) {
 
-        if(MusicPlayerService.serviceBound) {
-            if(previousSongIndex!=-1&&currentSongIndex!=previousSongIndex){
-                songList[previousSongIndex].isPlaying = false
-                adapter.notifyItemChanged(previousSongIndex)
+            val currentSongIndex = songMap[song.id]!!
+
+            if (MusicPlayerService.serviceBound) {
+                if (previousSongIndex != -1 && currentSongIndex != previousSongIndex) {
+                    songList[previousSongIndex].isPlaying = false
+                    adapter.notifyItemChanged(previousSongIndex)
+                }
+                songList[currentSongIndex].isPlaying = true
+                adapter.notifyItemChanged(currentSongIndex)
+                previousSongIndex = currentSongIndex
+                favouriteAdapter.notifyDataSetChanged()
+
+                queueAdapter?.notifyItemChanged(service?.currentSongIndex!!)
             }
-            songList[currentSongIndex].isPlaying = true
-            adapter.notifyItemChanged(currentSongIndex)
-            previousSongIndex = currentSongIndex
-            favouriteAdapter.notifyDataSetChanged()
-
-            queueAdapter?.notifyItemChanged(service?.currentSongIndex!!)
         }
     }
     var previousSongIndex  = -1
@@ -773,6 +828,7 @@ class HomeScreenActivity : AppCompatActivity()
         Glide.with(applicationContext).load(if(state){R.drawable.ic_pause_music_player}else{R.drawable.ic_play_music_player}).into(iv_state)
         Glide.with(applicationContext).load(if(state){R.drawable.ic_pause}else{R.drawable.ic_play_music}).into(iv_player_bar_state)
 
+        if(onlineSongInQueue)return
         if(MusicPlayerService.serviceBound) {
             adapter.notifyItemChanged(songMap[song.id]!!)
             if(favouriteMap2.size>0&&song.liked)
@@ -904,7 +960,7 @@ class HomeScreenActivity : AppCompatActivity()
             Log.d(TAG,"Not bound yet")
             val serviceIntent = Intent(this,MusicPlayerService::class.java)
             startService(serviceIntent)
-                bindService(serviceIntent,serviceConnection,BIND_AUTO_CREATE)
+            bindService(serviceIntent,serviceConnection,BIND_AUTO_CREATE)
         }
     }
     private fun startServiceIfNotStartedYet(){
@@ -954,7 +1010,9 @@ class HomeScreenActivity : AppCompatActivity()
                 playMusicOnBeginRunning()
             }else{
                 aCopyOfCurrentSongIndexToCarryWithinThisClass=service?.currentSongIndex!!
-                updateViewOnNewSong(service?.musicPlayer!!.isPlaying, service?.getCurrentSong()!!,songMap[service?.getCurrentSong()!!.id]!!,aCopyOfCurrentSongIndexToCarryWithinThisClass,false)
+                onlineSongInQueue = service?.isOnline!!
+                if(!service?.isOnline!!)
+                    updateViewOnNewSong(service?.musicPlayer!!.isPlaying, service?.getCurrentSong()!!,songMap[service?.getCurrentSong()!!.id]!!,aCopyOfCurrentSongIndexToCarryWithinThisClass,false)
             }
             if(intent.action== MusicPlayerNotification.INTENT_ACTION_FROM_NOTIFICATION){
                 MusicPlayerService.openActivityFromNotification = true
@@ -991,6 +1049,7 @@ class HomeScreenActivity : AppCompatActivity()
             val a = getListInQueue()
             if(a.size==0)return false
             service?.initSongQueue(a)
+            service?.isOnline = onlineSongInQueue
             service?.queuePointer = listToAddToQueue.listType
             service?.queuePointer2 = listToAddToQueue.index
             queueSetChanged = false
@@ -1003,15 +1062,20 @@ class HomeScreenActivity : AppCompatActivity()
 
 
     private fun getListInQueue():ArrayList<Song>{
+        onlineSongInQueue = false
         return when(listToAddToQueue.listType){
             ListTypes.LIST_TYPE_ALL_SONGS->{
-                if(service?.songList?.size!!>0){
+                if(service?.songList?.size!!>0&&!service?.isOnline!!){
                     notifyAdapterOnItemChanged(service?.getCurrentSong()!!,songMap[service?.getCurrentSong()!!.id]!!,listToAddToQueue.index)
                 }
                 songList
             }
+            ListTypes.LIST_TYPE_ONLINE_SONGS->{
+                onlineSongInQueue = true
+                onlineSongList
+            }
             ListTypes.LIST_TYPE_FAVOURITE_SONGS->{
-                if(service?.songList?.size!!>0){
+                if(service?.songList?.size!!>0&&!service?.isOnline!!){
                     adapter.notifyItemChanged(songMap[service?.getCurrentSong()!!.id]!!)
                     favouriteAdapter.notifyDataSetChanged()
                 }

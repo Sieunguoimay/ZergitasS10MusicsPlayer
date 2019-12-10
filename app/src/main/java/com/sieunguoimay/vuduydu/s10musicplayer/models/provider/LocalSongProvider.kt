@@ -10,6 +10,12 @@ import android.provider.MediaStore
 import android.util.Log
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
 import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+import android.R.id.edit
+import android.content.SharedPreferences
+import android.content.Context.MODE_PRIVATE
+import android.R.attr.data
+
+
 
 private const val TAG = "LOCAL_SONG_PROVIDER"
 object LocalSongProvider{
@@ -62,6 +68,41 @@ object LocalSongProvider{
             return true
         }
         return false
+    }
+    fun getSongInfoFromUri(context: Context,uri:Uri):Song?{
+        val proj = arrayOf(
+            MediaStore.Audio.AudioColumns._ID,
+            MediaStore.Audio.AudioColumns.ALBUM_ID,
+            MediaStore.Audio.AudioColumns.DISPLAY_NAME,
+            MediaStore.Audio.AudioColumns.ARTIST,
+            MediaStore.Audio.AudioColumns.DATA,
+            MediaStore.Audio.AudioColumns.DURATION,
+            MediaStore.Audio.AudioColumns.DATE_MODIFIED,
+            MediaStore.Audio.AudioColumns.SIZE,
+            MediaStore.Audio.AudioColumns.ALBUM,
+            MediaStore.Audio.AudioColumns.ARTIST_ID
+        )
+
+        val cursor = context.contentResolver.query(uri,proj,null,null,null)
+
+        if(cursor!=null){
+            while(cursor.moveToNext()){
+                val song = Song(cursor.getLong(0),
+                    cursor.getLong(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    null,
+                    cursor.getLong(5),
+                    cursor.getLong(6),
+                    cursor.getLong(7)
+                )
+                cursor.close()
+                return song
+            }
+            cursor.close()
+        }
+        return null
     }
     fun getThumbail(context: Context, albumId: Long) : Bitmap {
         val artworkUri = Uri.parse("content://media/external/audio/albumart")

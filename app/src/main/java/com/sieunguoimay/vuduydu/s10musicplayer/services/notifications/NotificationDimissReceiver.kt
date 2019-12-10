@@ -1,11 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.notifications
+package com.sieunguoimay.vuduydu.s10musicplayer.services.notifications
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
-import com.sieunguoimay.vuduydu.s10musicplayer.services.ServicesActions
 
 class NotificationDismissReceiver:BroadcastReceiver(){
 	override fun onReceive(context: Context?, intent: Intent?) {
