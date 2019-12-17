@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils
+package com.sieunguoimay.vuduydu.musicplayer.utils
 
 object ListTypes {
     val LIST_TYPE_ALL_SONGS = "list_type_all_songs"

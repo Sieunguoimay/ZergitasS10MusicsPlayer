@@ -1,26 +1,20 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs
+package com.sieunguoimay.vuduydu.musicplayer.screens.dialogs
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Build
 import android.support.v7.widget.CardView
-import android.text.Layout
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
 import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
-import kotlinx.android.synthetic.main.player_bar_home_screen.*
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.utils.ListTypes
+import com.sieunguoimay.vuduydu.musicplayer.utils.Utils
 
 private const val TAG = "MORE_OPTIONS_DIALOG"
 object MoreOptionsDialog {

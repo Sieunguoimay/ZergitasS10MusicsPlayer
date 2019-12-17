@@ -1,10 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models
+package com.sieunguoimay.vuduydu.musicplayer.models
 
 import android.content.Context
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.models.tasks.LoadSongDataAsyncTask
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.MusicsLoadingContract
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Category
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.models.tasks.LoadSongDataAsyncTask
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.MusicsLoadingContract
 
 private const val TAG = "MUSIC_LOADING_MODEL"
 class MusicLoadingModel(var context: Context):MusicsLoadingContract.Model{

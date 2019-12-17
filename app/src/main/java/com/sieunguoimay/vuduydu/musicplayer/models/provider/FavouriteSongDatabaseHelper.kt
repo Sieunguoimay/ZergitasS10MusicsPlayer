@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.provider
+package com.sieunguoimay.vuduydu.musicplayer.models.provider
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase

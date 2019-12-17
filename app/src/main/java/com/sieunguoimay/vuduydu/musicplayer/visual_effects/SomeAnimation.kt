@@ -1,11 +1,11 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.visual_effects
+package com.sieunguoimay.vuduydu.musicplayer.visual_effects
 
 import android.content.Context
 import android.graphics.Paint
 import android.support.v4.content.res.ResourcesCompat
 import android.util.Log
 import android.view.SurfaceView
-import com.sieunguoimay.vuduydu.s10musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.R
 private const val TAG = "SOME_ANIMATION"
 class SomeAnimation(context: Context): SurfaceView(context), Runnable{
     var running:Boolean = true

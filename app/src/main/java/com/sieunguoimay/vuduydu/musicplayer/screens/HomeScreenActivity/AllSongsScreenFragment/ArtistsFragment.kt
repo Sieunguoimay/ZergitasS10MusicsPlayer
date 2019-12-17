@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
 
 
 import android.os.Bundle
@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 
 
 class ArtistsFragment : Fragment(){

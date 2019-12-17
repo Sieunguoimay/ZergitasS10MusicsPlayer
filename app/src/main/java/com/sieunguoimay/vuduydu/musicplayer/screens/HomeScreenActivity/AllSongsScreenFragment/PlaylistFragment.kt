@@ -1,26 +1,22 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
 
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.widget.*
 import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.Toast
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.SongSelectActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.PlaylistRecyclerViewAdapter
-
-import kotlinx.android.synthetic.main.enter_name_dialog.*
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Playlist
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.screens.SongSelectActivity
+import com.sieunguoimay.vuduydu.musicplayer.screens.adapters.PlaylistRecyclerViewAdapter
 
 private const val TAG = "PLAYLIST_FRAGMENT"
 

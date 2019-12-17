@@ -34,7 +34,7 @@
                 android:id="@+id/iv_fragment_poster_overlay"
                 android:visibility="invisible"
         />
-        <com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.WaveformView
+        <com.sieunguoimay.vuduydu.musicplayer.visual_effects.WaveformView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"

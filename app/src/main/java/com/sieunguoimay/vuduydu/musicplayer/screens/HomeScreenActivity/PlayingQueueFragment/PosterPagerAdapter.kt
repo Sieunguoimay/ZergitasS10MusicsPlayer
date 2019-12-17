@@ -1,11 +1,11 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.PlayingQueueFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.PlayingQueueFragment
 
 import android.content.Context
 import android.view.ViewGroup
 import android.view.LayoutInflater
 import android.support.v4.view.PagerAdapter
 import android.view.View
-import com.sieunguoimay.vuduydu.s10musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.R
 
 
 class PosterPagerAdapter(private val mContext: Context) : PagerAdapter() {

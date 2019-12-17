@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
 
 
 import android.os.Bundle
@@ -13,8 +13,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 
 
 class FavouriteFragment : Fragment() {

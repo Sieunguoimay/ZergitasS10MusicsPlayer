@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils
+package com.sieunguoimay.vuduydu.musicplayer.utils
 
 object Constants {
     val SHARED_PREFERENCE_NAME = "s10_shared_preference"

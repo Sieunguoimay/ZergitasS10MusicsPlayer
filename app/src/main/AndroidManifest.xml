@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.sieunguoimay.vuduydu.s10musicplayer">
+          package="com.sieunguoimay.vuduydu.musicplayer">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -8,7 +8,8 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <application
             android:allowBackup="true"
             android:icon="@drawable/icon_launcher"
@@ -18,14 +19,14 @@
             android:theme="@style/AppTheme"
             android:largeHeap="true"
     >
-        <activity android:name=".screens.SongSelectActivity"/>
+        <activity android:name="com.sieunguoimay.vuduydu.musicplayer.screens.SongSelectActivity"/>
 
-        <service android:name=".services.MusicPlayerService"/>
+        <service android:name="com.sieunguoimay.vuduydu.musicplayer.services.MusicPlayerService"/>
 
-        <receiver android:name="com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.NotificationDismissReceiver"/>
+        <receiver android:name="com.sieunguoimay.vuduydu.musicplayer.services.notifications.NotificationDismissReceiver"/>
 
         <activity
-                android:name=".screens.HomeScreenActivity.HomeScreenActivity"
+                android:name="com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity"
                 android:label="@string/title_activity_home_screen"
                 android:screenOrientation="portrait"
 

@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer
+package com.sieunguoimay.vuduydu.musicplayer
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

@@ -1,10 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.adapters
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.adapters
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.*
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.*
 
 private const val TAG = "ViewPagerAdapter"
 class ViewPagerAdapter(

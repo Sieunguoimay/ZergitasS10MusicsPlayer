@@ -1,11 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models
+package com.sieunguoimay.vuduydu.musicplayer.models
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.MusicsPlayerMetadataContract
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Constants.SHARED_PREFERENCE_NAME
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Constants.SHUFFLE_STATE
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.MusicsPlayerMetadataContract
+import com.sieunguoimay.vuduydu.musicplayer.utils.Constants.SHARED_PREFERENCE_NAME
 
 class MetadataModel(var context:Context):
     MusicsPlayerMetadataContract.Model {

@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens
+package com.sieunguoimay.vuduydu.musicplayer.screens
 
 import android.app.Activity
 import android.content.Intent
@@ -11,11 +11,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
 import com.bumptech.glide.Glide
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity.Companion.darkModeEnabled
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongSelectRecyclerViewAdapter
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity.Companion.darkModeEnabled
+import com.sieunguoimay.vuduydu.musicplayer.screens.adapters.SongSelectRecyclerViewAdapter
 import kotlinx.android.synthetic.main.activity_song_select.*
 
 private const val TAG = "SONG_SELECT_ACTIVITY"

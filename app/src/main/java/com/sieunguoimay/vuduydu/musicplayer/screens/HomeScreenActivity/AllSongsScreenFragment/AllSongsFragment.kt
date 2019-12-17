@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -6,11 +6,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.view.*
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.adapters.ViewPagerAdapter
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.SearchFragment
-import kotlinx.android.synthetic.main.fragment_all_songs.*
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.adapters.ViewPagerAdapter
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.SearchFragment
 
 
 private const val TAG = "ALL_SONG_FRAGMENT"

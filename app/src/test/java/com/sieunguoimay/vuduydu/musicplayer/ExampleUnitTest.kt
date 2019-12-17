@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer
+package com.sieunguoimay.vuduydu.musicplayer
 
 import org.junit.Test
 

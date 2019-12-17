@@ -1,7 +1,5 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
 
-import android.media.Image
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
@@ -12,16 +10,14 @@ import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.models.provider.LocalSongProvider
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.PlaylistSongRecyclerViewAdapter
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.scaleAndCropCenter
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.models.provider.LocalSongProvider
+import com.sieunguoimay.vuduydu.musicplayer.screens.adapters.PlaylistSongRecyclerViewAdapter
+import com.sieunguoimay.vuduydu.musicplayer.utils.ListTypes
+import com.sieunguoimay.vuduydu.musicplayer.utils.Utils
+import com.sieunguoimay.vuduydu.musicplayer.utils.scaleAndCropCenter
 
 private const val TAG = "SHOW_SONG_LIST_FRAG"
 class ShowSongListFragment: Fragment() {

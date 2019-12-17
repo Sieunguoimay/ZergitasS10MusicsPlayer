@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters
+package com.sieunguoimay.vuduydu.musicplayer.screens.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper

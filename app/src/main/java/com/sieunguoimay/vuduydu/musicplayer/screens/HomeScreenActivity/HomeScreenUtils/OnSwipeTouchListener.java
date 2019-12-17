@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils;
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenUtils;
 
 import android.content.Context;
 import android.view.GestureDetector;

@@ -1,22 +1,17 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters
+package com.sieunguoimay.vuduydu.musicplayer.screens.adapters
 
 import android.content.Context
-import android.graphics.BitmapFactory
-import android.os.Build
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.ListTypes
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Category
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.utils.ListTypes
+import com.sieunguoimay.vuduydu.musicplayer.utils.Utils
 
 class AlbumRecyclerViewAdapter (
     var listener:AlbumListener,

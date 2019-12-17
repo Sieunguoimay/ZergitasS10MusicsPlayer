@@ -1,12 +1,12 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.tasks
+package com.sieunguoimay.vuduydu.musicplayer.models.tasks
 
 import android.content.Context
 import android.os.AsyncTask
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.models.provider.LocalSongProvider
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.scaleAndCropCenter
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Category
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.models.provider.LocalSongProvider
+import com.sieunguoimay.vuduydu.musicplayer.utils.scaleAndCropCenter
 //
 //Pair<Context,
 //Pair<Pair<ArrayList<Song>,LinkedHashMap<Long,Int>>,Pair<>>

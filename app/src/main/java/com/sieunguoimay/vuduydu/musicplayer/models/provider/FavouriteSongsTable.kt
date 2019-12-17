@@ -1,9 +1,9 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.provider
+package com.sieunguoimay.vuduydu.musicplayer.models.provider
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.FavouriteSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.FavouriteSongInfo
 
 private const val TAG = "FAVOURITE_SONGS_TABLE"
 class FavouriteSongsTable {

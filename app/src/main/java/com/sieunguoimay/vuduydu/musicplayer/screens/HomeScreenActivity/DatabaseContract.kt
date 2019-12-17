@@ -1,8 +1,8 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.FavouriteSongInfo
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.PlaylistSongInfo
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.models.data.FavouriteSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Playlist
+import com.sieunguoimay.vuduydu.musicplayer.models.data.PlaylistSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
 
 class DatabaseContract {
     //SQlit

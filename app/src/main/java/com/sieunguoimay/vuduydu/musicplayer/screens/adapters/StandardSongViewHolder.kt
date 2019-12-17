@@ -1,22 +1,16 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters
+package com.sieunguoimay.vuduydu.musicplayer.screens.adapters
 
 import android.content.Context
-import android.os.Build
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
-import kotlinx.android.synthetic.main.standard_row.*
-import pl.droidsonroids.gif.GifImageView
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 
 private const val TAG="STANDARD_VIEW_HOLDER"
 class StandardSongViewHolder(

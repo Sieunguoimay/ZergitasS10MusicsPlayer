@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -20,7 +20,7 @@ import android.support.v4.view.GravityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.R
 import kotlinx.android.synthetic.main.activity_home_screen.*
 import kotlinx.android.synthetic.main.app_bar_home_screen.*
 import android.view.*
@@ -35,29 +35,27 @@ import android.widget.*
 import com.bumptech.glide.Glide
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
+import com.sieunguoimay.vuduydu.musicplayer.services.MusicPlayerService
 import kotlinx.android.synthetic.main.player_bar_home_screen.*
-import com.sieunguoimay.vuduydu.s10musicplayer.models.DatabaseModel
-import com.sieunguoimay.vuduydu.s10musicplayer.models.MetadataModel
-import com.sieunguoimay.vuduydu.s10musicplayer.models.MusicLoadingModel
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification
-import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification.Companion.foregroundRunning
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.AllSongsFragment
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.PlaylistFragment
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils.FlashScreenAnimation
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils.OnSwipeTouchListener
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.PlayingQueueFragment.PlayingQueueFragment
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.*
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs.MoreOptionsDialog
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs.TimePickerDialogFragment
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.*
-import com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.AnimationEffects
+import com.sieunguoimay.vuduydu.musicplayer.models.DatabaseModel
+import com.sieunguoimay.vuduydu.musicplayer.models.MetadataModel
+import com.sieunguoimay.vuduydu.musicplayer.models.MusicLoadingModel
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Category
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Playlist
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.services.notifications.MusicPlayerNotification
+import com.sieunguoimay.vuduydu.musicplayer.services.notifications.MusicPlayerNotification.Companion.foregroundRunning
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.AllSongsFragment
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.PlaylistFragment
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenUtils.FlashScreenAnimation
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenUtils.OnSwipeTouchListener
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.PlayingQueueFragment.PlayingQueueFragment
+import com.sieunguoimay.vuduydu.musicplayer.screens.adapters.*
+import com.sieunguoimay.vuduydu.musicplayer.screens.dialogs.MoreOptionsDialog
+import com.sieunguoimay.vuduydu.musicplayer.screens.dialogs.TimePickerDialogFragment
+import com.sieunguoimay.vuduydu.musicplayer.utils.*
+import com.sieunguoimay.vuduydu.musicplayer.visual_effects.AnimationEffects
 import jp.wasabeef.blurry.Blurry
-import java.lang.Exception
 
 class HomeScreenActivity : AppCompatActivity()
 //    , NavigationView.OnNavigationItemSelectedListener
@@ -856,11 +854,11 @@ class HomeScreenActivity : AppCompatActivity()
                             adapter.notifyItemChanged(previousSongIndex)
 
                         }
-                    }
-                    if (newSongIndex != previousSongIndex) {
-                        onlineSongList[previousSongIndex].isPlaying = false
-                        onlineSongAdapter.notifyItemChanged(previousSongIndex)
-                    }
+                    }else
+                        if (newSongIndex != previousSongIndex) {
+                            onlineSongList[previousSongIndex].isPlaying = false
+                            onlineSongAdapter.notifyItemChanged(previousSongIndex)
+                        }
                 }
 
                 onlineSongList[newSongIndex].isPlaying = true
@@ -880,12 +878,11 @@ class HomeScreenActivity : AppCompatActivity()
                         onlineSongList[previousSongIndex].isPlaying = false
                         onlineSongAdapter.notifyItemChanged(previousSongIndex)
                     }
-                }
-
-                if (previousSongIndex != -1 && currentSongIndex != previousSongIndex) {
+                }else if (previousSongIndex != -1 && currentSongIndex != previousSongIndex) {
                     songList[previousSongIndex].isPlaying = false
                     adapter.notifyItemChanged(previousSongIndex)
                 }
+
                 songList[currentSongIndex].isPlaying = true
                 adapter.notifyItemChanged(currentSongIndex)
                 favouriteAdapter.notifyDataSetChanged()

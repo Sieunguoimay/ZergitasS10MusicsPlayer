@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.services
+package com.sieunguoimay.vuduydu.musicplayer.services
 
 import android.app.Service
 import android.content.Context
@@ -12,16 +12,16 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.Toast
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.services.notifications.MusicPlayerNotification
-import com.sieunguoimay.vuduydu.s10musicplayer.tasks.ProgressBarThread
-import com.sieunguoimay.vuduydu.s10musicplayer.visual_effects.WaveformVisualizer
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.services.notifications.MusicPlayerNotification
+import com.sieunguoimay.vuduydu.musicplayer.tasks.ProgressBarThread
+import com.sieunguoimay.vuduydu.musicplayer.visual_effects.WaveformVisualizer
 import java.io.File
 import java.io.IOException
 import java.lang.IllegalArgumentException
 import android.media.AudioFocusRequest
 import android.media.AudioAttributes
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.DatabasePresenter
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.DatabasePresenter
 
 
 private val TAG = "MUSIC_PLAYER_SERVICE"

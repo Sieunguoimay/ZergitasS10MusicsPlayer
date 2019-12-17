@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.tasks
+package com.sieunguoimay.vuduydu.musicplayer.tasks
 
 import android.os.Handler
 import android.os.Looper

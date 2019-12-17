@@ -1,13 +1,13 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models
+package com.sieunguoimay.vuduydu.musicplayer.models
 
 import android.content.Context
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.FavouriteSongInfo
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.PlaylistSongInfo
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.models.provider.FavouriteSongDatabaseHelper
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.DatabaseContract
+import com.sieunguoimay.vuduydu.musicplayer.models.data.FavouriteSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Playlist
+import com.sieunguoimay.vuduydu.musicplayer.models.data.PlaylistSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.models.provider.FavouriteSongDatabaseHelper
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.DatabaseContract
 
 private const val TAG = "DATABASE_MODEL"
 

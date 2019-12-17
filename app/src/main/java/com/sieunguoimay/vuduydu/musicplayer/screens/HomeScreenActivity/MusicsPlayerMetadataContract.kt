@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
 
 class MusicsPlayerMetadataContract {
     interface View{

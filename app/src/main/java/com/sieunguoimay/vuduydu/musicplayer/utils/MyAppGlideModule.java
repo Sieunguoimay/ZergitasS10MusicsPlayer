@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils;
+package com.sieunguoimay.vuduydu.musicplayer.utils;
 
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.module.AppGlideModule;

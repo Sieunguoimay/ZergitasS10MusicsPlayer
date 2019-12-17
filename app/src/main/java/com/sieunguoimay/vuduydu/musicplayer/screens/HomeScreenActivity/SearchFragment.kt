@@ -1,9 +1,8 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.widget.CardView
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,16 +11,12 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment.SongsFragment
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongRecyclerViewAdapter
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
-import kotlinx.android.synthetic.main.app_bar_home_screen.*
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.screens.adapters.SongRecyclerViewAdapter
+import com.sieunguoimay.vuduydu.musicplayer.utils.Utils
 import java.util.*
 import kotlin.collections.ArrayList
 

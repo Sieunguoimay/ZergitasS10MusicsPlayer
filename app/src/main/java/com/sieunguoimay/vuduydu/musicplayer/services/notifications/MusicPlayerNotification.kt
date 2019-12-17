@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.services.notifications
+package com.sieunguoimay.vuduydu.musicplayer.services.notifications
 
 import android.app.*
 
@@ -10,13 +10,13 @@ import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import android.view.View
 import android.widget.RemoteViews
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.services.MusicPlayerService
-import com.sieunguoimay.vuduydu.s10musicplayer.services.ServicesActions
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.services.MusicPlayerService
+import com.sieunguoimay.vuduydu.musicplayer.services.ServicesActions
 import android.app.NotificationManager
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.getCircleBitmap
+import com.sieunguoimay.vuduydu.musicplayer.utils.getCircleBitmap
 
 
 //this notification will live along with the service as a loyal slave

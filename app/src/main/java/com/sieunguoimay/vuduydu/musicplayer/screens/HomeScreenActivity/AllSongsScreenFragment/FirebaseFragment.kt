@@ -1,12 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.AllSongsScreenFragment
 
 import android.app.Activity.RESULT_OK
-import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.provider.MediaStore
 import android.support.v4.app.Fragment
 import android.support.v7.widget.CardView
 import android.support.v7.widget.DefaultItemAnimator
@@ -17,24 +15,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.MimeTypeMap
-import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
-import com.google.firebase.database.*
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.StorageTask
 import com.google.firebase.storage.UploadTask
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import com.sieunguoimay.vuduydu.s10musicplayer.models.provider.LocalSongProvider
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongRecyclerViewAdapter
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.models.provider.LocalSongProvider
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import kotlinx.android.synthetic.main.fragment_firebase.*
-import kotlinx.android.synthetic.main.player_bar_home_screen.*
-import kotlin.concurrent.timerTask
 
 private const val TAG = "SOUND_CLOUD_FRAGMENT"
 class FirebaseFragment: Fragment()

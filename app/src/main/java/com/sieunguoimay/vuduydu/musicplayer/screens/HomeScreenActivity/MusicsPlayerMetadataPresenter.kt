@@ -1,9 +1,9 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity
 
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Constants.DARK_MODE_ENABLED
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Constants.PREVIOUS_TIMER
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Constants.SHUFFLE_STATE
+import com.sieunguoimay.vuduydu.musicplayer.utils.Constants.DARK_MODE_ENABLED
+import com.sieunguoimay.vuduydu.musicplayer.utils.Constants.PREVIOUS_TIMER
+import com.sieunguoimay.vuduydu.musicplayer.utils.Constants.SHUFFLE_STATE
 
 private const val TAG = "MP_METADATA_PRESENTER"
 class MusicsPlayerMetadataPresenter(

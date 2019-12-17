@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.helpers;
+package com.sieunguoimay.vuduydu.musicplayer.helpers;
 /*
  * Copyright 2017 Google Inc. All rights reserved.
  *

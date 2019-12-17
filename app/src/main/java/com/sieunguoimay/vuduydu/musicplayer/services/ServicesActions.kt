@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.services
+package com.sieunguoimay.vuduydu.musicplayer.services
 
 object ServicesActions {
     const val STOP_START_SERVICE = "com.sieunguoimay.vuduydu.s10musicplayer.STOP_START_SERVICE"

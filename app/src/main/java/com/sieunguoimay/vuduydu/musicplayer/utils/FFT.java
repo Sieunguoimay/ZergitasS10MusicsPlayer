@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils;
+package com.sieunguoimay.vuduydu.musicplayer.utils;
 
 public class FFT {
 

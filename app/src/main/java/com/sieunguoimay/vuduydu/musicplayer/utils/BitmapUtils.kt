@@ -1,18 +1,9 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils
+package com.sieunguoimay.vuduydu.musicplayer.utils
 
-import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.graphics.Paint.ANTI_ALIAS_FLAG
-import android.support.v4.content.FileProvider
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Environment
-import android.os.Environment.DIRECTORY_PICTURES
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.RectF

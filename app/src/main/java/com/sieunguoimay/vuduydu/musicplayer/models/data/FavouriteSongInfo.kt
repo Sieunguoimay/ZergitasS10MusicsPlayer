@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.data
+package com.sieunguoimay.vuduydu.musicplayer.models.data
 
 
 class FavouriteSongInfo(var songId:Long, var title:String) {

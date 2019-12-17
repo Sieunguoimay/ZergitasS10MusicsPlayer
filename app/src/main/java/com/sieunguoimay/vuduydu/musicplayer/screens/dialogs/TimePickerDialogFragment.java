@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.dialogs;
+package com.sieunguoimay.vuduydu.musicplayer.screens.dialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TimePicker;
-import com.sieunguoimay.vuduydu.s10musicplayer.R;
+import com.sieunguoimay.vuduydu.musicplayer.R;
 
 
 public class TimePickerDialogFragment extends AppCompatDialogFragment {

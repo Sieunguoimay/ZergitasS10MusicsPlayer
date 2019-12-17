@@ -1,12 +1,8 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.visual_effects
+package com.sieunguoimay.vuduydu.musicplayer.visual_effects
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
-import android.util.Log
 import android.view.View
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils.FlashScreenAnimation
-import kotlinx.android.synthetic.main.player_bar_home_screen.*
 
 object AnimationEffects {
 

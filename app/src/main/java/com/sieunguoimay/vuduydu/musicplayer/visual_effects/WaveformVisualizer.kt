@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.visual_effects
+package com.sieunguoimay.vuduydu.musicplayer.visual_effects
 
 import android.media.audiofx.Visualizer
 

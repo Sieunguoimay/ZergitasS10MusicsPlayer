@@ -1,10 +1,9 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.data
+package com.sieunguoimay.vuduydu.musicplayer.models.data
 
 
 import android.graphics.Bitmap
 import android.os.Parcel
 import android.os.Parcelable
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.adapters.SongSelectRecyclerViewAdapter
 
 
 open class Song(

@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.provider
+package com.sieunguoimay.vuduydu.musicplayer.models.provider
 
 import android.content.ContentUris
 import android.content.Context
@@ -8,13 +8,8 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.provider.MediaStore
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Category
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Song
-import android.R.id.edit
-import android.content.SharedPreferences
-import android.content.Context.MODE_PRIVATE
-import android.R.attr.data
-
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Category
+import com.sieunguoimay.vuduydu.musicplayer.models.data.Song
 
 
 private const val TAG = "LOCAL_SONG_PROVIDER"

@@ -1,10 +1,9 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.models.provider
+package com.sieunguoimay.vuduydu.musicplayer.models.provider
 
 import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import android.util.Log
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.Playlist
-import com.sieunguoimay.vuduydu.s10musicplayer.models.data.PlaylistSongInfo
+import com.sieunguoimay.vuduydu.musicplayer.models.data.PlaylistSongInfo
 
 private const val TAG = "PLAYLIST_SONGS_TABLE"
 class PlaylistSongsTable{

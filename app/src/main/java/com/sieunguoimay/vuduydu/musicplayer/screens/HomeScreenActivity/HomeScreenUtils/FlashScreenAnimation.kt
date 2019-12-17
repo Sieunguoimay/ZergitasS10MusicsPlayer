@@ -1,11 +1,10 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenUtils
+package com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenUtils
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.content.Context
 import android.os.Handler
 import android.view.View
-import com.sieunguoimay.vuduydu.s10musicplayer.screens.HomeScreenActivity.HomeScreenActivity
+import com.sieunguoimay.vuduydu.musicplayer.screens.HomeScreenActivity.HomeScreenActivity
 import kotlinx.android.synthetic.main.activity_home_screen.*
 
 object FlashScreenAnimation {

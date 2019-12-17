@@ -1,4 +1,4 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.utils
+package com.sieunguoimay.vuduydu.musicplayer.utils
 
 import android.app.Activity
 import android.content.Context
@@ -8,15 +8,8 @@ import android.support.annotation.RequiresApi
 import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import android.view.WindowManager
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import android.view.ViewGroup
-
-
-
-
-
+import com.sieunguoimay.vuduydu.musicplayer.R
 
 
 object Utils {

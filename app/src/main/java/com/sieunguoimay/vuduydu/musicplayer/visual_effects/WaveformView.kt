@@ -1,13 +1,11 @@
-package com.sieunguoimay.vuduydu.s10musicplayer.visual_effects
+package com.sieunguoimay.vuduydu.musicplayer.visual_effects
 
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.animation.LinearInterpolator
-import com.sieunguoimay.vuduydu.s10musicplayer.R
-import com.sieunguoimay.vuduydu.s10musicplayer.utils.Utils
+import com.sieunguoimay.vuduydu.musicplayer.R
+import com.sieunguoimay.vuduydu.musicplayer.utils.Utils
 
 private const val TAG="WAVEFORM_VIEW"
 
